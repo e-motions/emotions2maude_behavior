@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gcs"
+    nsURI="http://www.lcc.uma.es/GCS/1.0" nsPrefix="gcs">
+  <eClassifiers xsi:type="ecore:EClass" name="MetamodelGD" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="packagesGD" upperBound="-1"
+        eType="#//PackageGD" containment="true" eOpposite="#//PackageGD/metamodelGD"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassGD" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="figurePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="packageGD" lowerBound="1"
+        eType="#//PackageGD" eOpposite="#//PackageGD/classesGD"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="class" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="class" lowerBound="1" eType="#//EClass"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageGD" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classesGD" upperBound="-1"
+        eType="#//ClassGD" containment="true" eOpposite="#//ClassGD/packageGD"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelGD" lowerBound="1"
+        eType="#//MetamodelGD" eOpposite="#//MetamodelGD/packagesGD"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" lowerBound="1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superPackageGD" eType="#//PackageGD"
+        eOpposite="#//PackageGD/subPackagesGD"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subPackagesGD" upperBound="-1"
+        eType="#//PackageGD" containment="true" eOpposite="#//PackageGD/superPackageGD"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" lowerBound="1"
+        eType="#//Epackage"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Epackage"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EClass"/>
+</ecore:EPackage>

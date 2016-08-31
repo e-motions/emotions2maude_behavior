@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior:Behavior xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:behavior="http://www.lcc.uma.es/Behavior/1.0" denseTime="true">
+  <metamodelGD href="trajectory.gcs#/"/>
+  <rules xsi:type="behavior:AtomicRule" name="Initial" lhs="//@rules.0/@patterns.0" rhs="//@rules.0/@patterns.1" nacs="//@rules.0/@patterns.2" maxDuration="0">
+    <patterns name="LHS"/>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <sfs oclValue="0.0">
+          <sf href="DefaultName.ecore#//Arrow/x"/>
+        </sfs>
+        <sfs oclValue="0.0">
+          <sf href="DefaultName.ecore#//Arrow/y"/>
+        </sfs>
+        <sfs oclValue="60 * 0.5.cos()">
+          <sf href="DefaultName.ecore#//Arrow/xspeed"/>
+        </sfs>
+        <sfs oclValue="60 * 0.5.sin()">
+          <sf href="DefaultName.ecore#//Arrow/yspeed"/>
+        </sfs>
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object" id="c">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns name="NoArrow">
+      <els xsi:type="behavior:Object" id="b">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:OngoingRule" name="Move" lhs="//@rules.1/@patterns.0" rhs="//@rules.1/@patterns.1">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <sfs oclValue="a.yspeed - 9.8 * T">
+          <sf href="DefaultName.ecore#//Arrow/yspeed"/>
+        </sfs>
+        <sfs oclValue="a.y + a.yspeed*T - 9.8*T.pow(2)/2 ">
+          <sf href="DefaultName.ecore#//Arrow/y"/>
+        </sfs>
+        <sfs oclValue="a.x + a.xspeed*T">
+          <sf href="DefaultName.ecore#//Arrow/x"/>
+        </sfs>
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule" name="Snapshot" lhs="//@rules.2/@patterns.0" rhs="//@rules.2/@patterns.1" maxDuration="0" periodicity="0.5">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object" id="c">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object" id="c" outLinks="//@rules.2/@patterns.1/@els.3">
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="p" inLinks="//@rules.2/@patterns.1/@els.3">
+        <sfs oclValue="a.x">
+          <sf href="DefaultName.ecore#//Position/x"/>
+        </sfs>
+        <sfs oclValue="a.y">
+          <sf href="DefaultName.ecore#//Position/y"/>
+        </sfs>
+        <classGD href="trajectory.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.2/@patterns.1/@els.1" target="//@rules.2/@patterns.1/@els.2" pos="">
+        <ref href="DefaultName.ecore#//Camera/trajectory"/>
+      </els>
+    </patterns>
+  </rules>
+</behavior:Behavior>
