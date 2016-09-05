@@ -31,10 +31,6 @@ public class ModelManager {
 		resourceSet = this.initEMF();
 		
 		/* Create URIs */
-//		URI _behURI = URI.createURI(behaviorModel.getAbsolutePath());
-//		URI _gcsURI = URI.createURI(gcsModel.getAbsolutePath());
-//		URI _maudeURI = URI.createURI(maudeModel.getAbsolutePath());
-		
 		URI _behURI = URI.createFileURI(behaviorModel.getAbsolutePath());
 		URI _gcsURI = URI.createFileURI(gcsModel.getAbsolutePath());
 		URI _maudeURI = URI.createFileURI(maudeModel.getAbsolutePath());
@@ -53,17 +49,6 @@ public class ModelManager {
 		
 		EcoreUtil.resolveAll(resourceSet);
 		
-		System.out.println("getPackageRegistry: " + resourceSet.getPackageRegistry());
-		System.out.println("getResources: " + resourceSet.getResources());
-		System.out.println("getResourceFactoryRegistry: " + resourceSet.getResourceFactoryRegistry());
-		
-		System.out.println("MetamodelGD name: " + ((MetamodelGD) gcsResource.getContents().get(0)).getName());
-	    System.out.println("behavior.getMetamodelGD(): " + ((Behavior) behResource.getContents().get(0)).getMetamodelGD());
-	    System.out.println("behavior.getMetamodelGD().eIsProxy(): " + 
-	    		((EObject) ((Behavior) behResource.getContents().get(0)).getMetamodelGD().get(0)).eIsProxy());
-	    System.out.println("EcoreUtil.resolve: " + 
-	    		EcoreUtil.resolve(((EObject) ((Behavior) behResource.getContents().get(0)).getMetamodelGD().get(0)), behResource));
-	    
 	    behModel = behResource;
 	    this.maudeModel = maudeResource;
 	}

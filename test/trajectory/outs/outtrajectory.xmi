@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="ASCII"?>
 <Maude:MaudeSpec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Maude="http://MaudeMM/1.0">
+  <els xsi:type="Maude:SModule" name="@DEFAULTNAME@BEHAVIOR@">
+    <els xsi:type="Maude:ModImportation">
+      <imports xsi:type="Maude:ModuleIdModExp" module="//@els.1"/>
+    </els>
+    <els xsi:type="Maude:ModImportation">
+      <imports xsi:type="Maude:ModuleIdModExp" module="//@els.2"/>
+    </els>
+    <els xsi:type="Maude:ModImportation">
+      <imports xsi:type="Maude:ModuleIdModExp" module="//@els.3"/>
+    </els>
+  </els>
+  <els xsi:type="Maude:SModule" name="E-MOTIONS"/>
+  <els xsi:type="Maude:SModule" name="DENSE_TIME"/>
   <els xsi:type="Maude:SModule" name="@DEFAULTNAME@"/>
 </Maude:MaudeSpec>

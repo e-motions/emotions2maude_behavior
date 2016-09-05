@@ -3,6 +3,8 @@
 This file is intended to document the transformation from e-Motions behavior model to a Maude model.
 
 
+
+
 # Done
 
 
@@ -11,3 +13,5 @@ This file is intended to document the transformation from e-Motions behavior mod
 
 1. Rules information
 2. MTEs
+3. Module importations
+
