@@ -4,18 +4,32 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
+import Maude.Constant;
+import Maude.Equation;
 import Maude.MaudeFactory;
 import Maude.MaudeSpec;
+import Maude.ModElement;
 import Maude.ModImportation;
 import Maude.ModuleIdModExp;
+import Maude.Operation;
+import Maude.RecTerm;
 import Maude.SModule;
+import Maude.Term;
+import behavior.ActionExec;
+import behavior.AtomicRule;
 import behavior.Behavior;
+import behavior.Object;
+import behavior.Pattern;
+import behavior.PatternEl;
 import behavior.Rule;
+import behavior.Variable;
 import gcs.MetamodelGD;
 
 public class Emotions2Maude {
@@ -43,6 +57,7 @@ public class Emotions2Maude {
 		
 		modelManager = new ModelManager(behModel, gcsModel, maudeModel);
 		factory = MaudeFactory.eINSTANCE;
+		
 	}
 	
 	
@@ -61,11 +76,251 @@ public class Emotions2Maude {
 		debug("Added importations");
 		
 		for(Rule r : beh.getRules()) {
-			debug("Rule: " + r.getName());
+			/* is it Atomic or Ongoing? */
+			if(r instanceof AtomicRule) {
+				AtomicRule atomic = (AtomicRule) r;
+				debug("Rule: " + r.getName() + "  AtomicRule");
+				debug("   Min duration: " + atomic.getMinDuration());
+				debug("   Periodicity: " + atomic.getPeriodicity());
+				/* is it periodic? */
+				/* TODO: maybe this if statement should be modified */
+ 				if(atomic.getPeriodicity() == 0.0) {
+ 					/* periodic */
+ 					if(Double.valueOf(atomic.getMaxDuration()) == 0.0) {
+ 						/* instantaneous */
+ 						smod.getEls().addAll(atomicRuleInstantaneousNotPeriodic(atomic));
+ 					}
+ 				} else {
+ 					/* not periodic */
+ 					if(Double.valueOf(atomic.getMaxDuration()) == 0.0) {
+ 						/* instantaneous */
+ 					}
+ 				}
+			} else {
+				debug("Rule: " + r.getName() + "  OngoingRule");
+			}
+			debug("   Lower bound: " + r.getLowerBound());
+			debug("   Upper bound: " + r.getUpperBound());
+			debug("   Max duration: " + r.getMaxDuration());
 		}
 		
 		return this;
 	}
+
+	private EList<ModElement> atomicRuleInstantaneousNotPeriodic(AtomicRule atomic) {
+		EList<ModElement> result = new BasicEList<ModElement>();
+		/* NACs ? */
+		for(Pattern nac : atomic.getNacs()) {
+			debug("     NAC: " + nac.getName());
+			result.addAll(createNac(nac));
+		}
+		
+		return result;
+	}
+
+	/**
+	 * It creates the operation needed for handling a NAC pattern.
+	 * A NAC operation will have as arguments:
+	 * 	1- The set of Oids of the elements in the LHS
+	 *  2- The set of objects representing the variables
+	 *  3- A variable that will have the whole model
+	 *  
+	 *  The rule in ATL is:
+	 *  
+	 *  lazy rule OperationNac{
+	from
+		n : Behavior!NAC
+	to
+		o : Maude!Operation(
+			name <- n.name.toLower().processSpecOpChars() + '@' + n."rule".name.processSpecOpChars(),
+			arity <- Sequence{thisModule.setSort,thisModule.sortSetObject,thisModule.sortModel},
+			coarity <- thisModule.boolSort,
+			"module" <- thisModule.mainModule
+		),
+		--- Conditional equation
+		condEq : Maude!Equation(
+			lhs <- lhsTerm,
+			rhs <- rhsTerm,
+			"module" <- thisModule.mainModule,
+			conds <- Sequence{wholeModel} ->
+						union(n.patternObjects() -> collect(t|t.sfs) -> flatten() -> collect(t|thisModule.SlotsComputation(t))) ->
+						union(n.els -> select(j|j.oclIsTypeOf(Behavior!Condition)) -> collect(r|thisModule.OCLConditionsComputation(r))) ->
+						union(n.els -> select(e|e.oclIsTypeOf(Behavior!Link))->collect(o|o.LinkComputation()))
+		),
+		wholeModel : Maude!MatchingCond(
+			lhs <- lhsWM,
+			rhs <- thisModule.NacElements(n)
+		),
+		lhsWM : Maude!Variable(
+			name <- 'MODEL@',
+			type <- thisModule.sortModel
+		),
+
+		lhsTerm : Maude!RecTerm(
+			op <- n.name.toLower().processSpecOpChars() + '@' + n."rule".name.processSpecOpChars(),
+			type <- thisModule.boolSort, 			
+			args <- if n."rule".vbles -> isEmpty() then Sequence{set,thisModule.VariableEmpty(''),thisModule.NacElements(n)}
+					else
+						if n."rule".vbles -> size()=1 then Sequence{set,thisModule.CreateVar(n."rule".vbles -> first(),1),thisModule.NacElements(n)}
+						else Sequence{set,thisModule.CreateSetVar(n."rule"),thisModule.NacElements(n)}
+						endif
+					endif			
+		),
+		set : Maude!RecTerm(
+			op <- thisModule.setCollection,
+			type <- thisModule.setSort,
+			--args <- itemsSet
+			args <- if n."rule".objActExecLHSRule()->isEmpty() then thisModule.ConstantEmpty('')
+					else
+						if n."rule".objActExecLHSRule()->size()=1 then thisModule.PatternElOid(n."rule".objActExecLHSRule()->first())
+						else thisModule.ManyPatternElOid(n."rule")
+						endif
+					endif
+			),
+		rhsTerm : Maude!Constant(
+			op <- 'true',
+			type <- thisModule.boolSort
+			),
+			
+		---Equation with the condition to FALSE---
+		eqFalse : Maude!Equation(
+			lhs <- lhsEqFalse,
+			rhs <- rhsEqFalse,
+			"module" <- thisModule.mainModule,
+			atts <- 'owise'
+		),
+		lhsEqFalse : Maude!RecTerm(
+			op <- n.name.toLower().processSpecOpChars() + '@' + n."rule".name.processSpecOpChars(),
+			type <- thisModule.boolSort,
+			args <- Sequence{oidsetVar,currentTimerFalseVar,modelVar}
+		),
+		oidsetVar : Maude!Variable(
+			name <- 'OIDSET@',
+			type <- thisModule.setSort
+		),		
+		currentTimerFalseVar : Maude!Variable(
+			name <- 'OBJSET@',
+			type <- thisModule.sortSetObject
+		),
+		modelVar : Maude!Variable(
+			name <- 'MODEL@',
+			type <- thisModule.sortModel
+		),
+		rhsEqFalse : Maude!Constant(
+			op <- 'false',
+			type <- thisModule.boolSort
+		)
+}
+	 *  
+	 *  
+	 * @param nac pattern
+	 * @return the list of ModElements to be added to the Maude System Module
+	 */
+	private EList<ModElement> createNac(Pattern nac) {
+		EList<ModElement> results = new BasicEList<ModElement>();
+		/* name of the operator */
+		String name = processSpecialChars(nac.getName().toLowerCase()) + "@" + nac.getRule().getName();
+		EmotionsModule _emMod = EmotionsModule.getDefault();
+		MyMaudeFactory _maudeFact = MyMaudeFactory.getDefault();
+		
+		/* operator */
+		/* op <nac>@<rule> : Set Set{@Object} @Model -> Bool . */
+		Operation op = factory.createOperation();
+		op.setName(name);
+		op.getArity().add(_emMod.getSortSet());
+		op.getArity().add(_emMod.getSortSetObject());
+		op.getArity().add(_emMod.getSortModel());
+		op.setCoarity(_emMod.getSortBool());
+		
+		/* Equation with the condition */
+		Equation equation1 = factory.createEquation();
+		/* lhs */
+		RecTerm lhsTerm = factory.createRecTerm();
+		lhsTerm.setOp(name);
+		
+		/*
+		 * First argument is the set of Objects or Action executions in the NAC's LHS
+		 * 
+		 * DELETE: set : Maude!RecTerm 
+		 * */
+		RecTerm set = factory.createRecTerm(); 
+		set.setOp("Set`{_`}");
+		// setting the args
+		List<behavior.Object> objects = nac.getEls().stream()
+				.filter(x -> x instanceof behavior.Object)
+				.map(o -> (behavior.Object) o)
+				.collect(Collectors.toList());
+		List<ActionExec> actions = nac.getEls().stream()
+				.filter(x -> x instanceof ActionExec)
+				.map(o -> (ActionExec) o)
+				.collect(Collectors.toList());
+		if(objects.isEmpty() && actions.isEmpty()) {
+			// thisModule.ConstantEmpty('')
+			set.getArgs().add(_maudeFact.getConstantEmpty());
+		} else if(objects.isEmpty() && actions.size() == 1) {
+			//thisModule.PatternElOid(n."rule".objActExecLHSRule()->first())
+			set.getArgs().add(getPatternElOid(actions.get(0)));
+		} else if(objects.size() == 1 && actions.isEmpty()) {
+			//thisModule.PatternElOid(n."rule".objActExecLHSRule()->first())
+			set.getArgs().add(getPatternElOid(objects.get(0)));
+		} else {
+			// thisModule.ManyPatternElOid(n."rule")
+		}
+		
+		/* rhs */
+		
+		/* Equation with the owise attribute */
+		//eq <nac>@<rule>(OIDSET@:Set, OBJSET@:Set{@Object}, MODEL@:@Model) = false [owise] .
+		Equation equation2 = factory.createEquation();
+		equation2.setLhs(factory.createRecTerm());
+		((RecTerm) equation2.getLhs()).setOp(name);
+		((RecTerm) equation2.getLhs()).getArgs().add(_maudeFact.getVariableOidSet());
+		((RecTerm) equation2.getLhs()).getArgs().add(_maudeFact.getVariableObjectSet());
+		((RecTerm) equation2.getLhs()).getArgs().add(_maudeFact.getVariableModel());
+		
+		equation2.setRhs(_maudeFact.getConstantFalse());
+		equation2.getAtts().add("owise");
+		
+		
+		
+		results.add(op);
+		results.add(equation1);
+		results.add(equation2);
+		return results;
+	}
+
+	/**
+	 * -- It creates variable for identifiers
+	 * 
+	 *	lazy rule PatternElOid{
+	 *	from
+	 *		o : Behavior!PatternEl	
+	 *	to
+	 *		d : Maude!Variable(
+	 *			name <- o.id,
+	 *			type <- thisModule.oclTypeSort
+	 *		)
+	 *	}
+	 */
+	private Maude.Variable getPatternElOid(ActionExec action) {
+		Maude.Variable res = factory.createVariable();
+		res.setName(action.getId());
+		res.setType(EmotionsModule.getDefault().getOCLType());
+		return null;
+	}
+	
+	private Maude.Variable getPatternElOid(behavior.Object object) {
+		Maude.Variable res = factory.createVariable();
+		res.setName(object.getId());
+		res.setType(EmotionsModule.getDefault().getOCLType());
+		return null;
+	}
+
+
+	private String processSpecialChars(String str) {
+		return str;
+	}
+
 
 	/**
 	 * Returns a list of module importations to be added to the main system module
@@ -77,13 +332,11 @@ public class Emotions2Maude {
 		 */
 		/* Import e-Motions module */
 		/* Create module and include it in the MaudeSpec */
-		SModule emotionsMod = factory.createSModule();
-		emotionsMod.setName("E-MOTIONS");
-		mSpec.getEls().add(emotionsMod);
+		mSpec.getEls().add(EmotionsModule.getDefault().getModule());
 		
 		ModImportation emotionsImportation = factory.createModImportation();
 		ModuleIdModExp emotionsModExp = factory.createModuleIdModExp();
-		emotionsModExp.setModule(emotionsMod);
+		emotionsModExp.setModule(EmotionsModule.getDefault().getModule());
 		emotionsImportation.setImports(emotionsModExp);
 		
 		/* Import dense or discrete time module */
