@@ -16,6 +16,8 @@
       <atts>owise</atts>
       <lhs xsi:type="Maude:RecTerm" op="noarrow@Initial">
         <args xsi:type="Maude:Variable" type="//@els.1/@els.0" name="OIDSET@"/>
+        <args xsi:type="Maude:Variable" type="//@els.1/@els.1" name="OBJSET@"/>
+        <args xsi:type="Maude:Variable" type="//@els.1/@els.2" name="MODEL@"/>
       </lhs>
       <rhs xsi:type="Maude:Constant" op="false"/>
     </els>
@@ -25,6 +27,7 @@
     <els xsi:type="Maude:Sort" name="Set{@Object}"/>
     <els xsi:type="Maude:Sort" name="@Model"/>
     <els xsi:type="Maude:Sort" name="Bool"/>
+    <els xsi:type="Maude:Sort" name="OCL-Type"/>
   </els>
   <els xsi:type="Maude:SModule" name="DENSE_TIME"/>
   <els xsi:type="Maude:SModule" name="@DEFAULTNAME@"/>

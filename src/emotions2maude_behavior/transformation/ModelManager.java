@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -14,10 +13,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import Maude.MaudePackage;
-import behavior.Behavior;
 import behavior.BehaviorPackage;
 import gcs.GcsPackage;
-import gcs.MetamodelGD;
 
 public class ModelManager {
 	

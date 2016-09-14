@@ -1,8 +1,13 @@
 package emotions2maude_behavior.transformation;
 
+import java.util.List;
+
 import Maude.Constant;
 import Maude.MaudeFactory;
+import Maude.RecTerm;
+import Maude.Term;
 import Maude.Variable;
+import emotions2maude_behavior.transformation.utils.MaudeOperators;
 
 public class MyMaudeFactory {
 	
@@ -57,6 +62,36 @@ public class MyMaudeFactory {
 	}
 	
 	/**
+	 * It produces a variable: name:OCL-Type
+	 */
+	public Variable createVariableOCLType(String name) {
+		Variable res = factory.createVariable();
+		res.setName(name);
+		res.setType(EmotionsModule.getDefault().getSortOCLType());
+		return res;
+	}
+	
+	/**
+	 * It produces a variable: name:Oid
+	 */
+	public Variable createVariableOid(String name) {
+		Variable res = factory.createVariable();
+		res.setName(name);
+		res.setType(EmotionsModule.getDefault().getSortOid());
+		return res;
+	}
+	
+	/**
+	 * It produces a variable: MM@:@Metamodel
+	 */
+	public Variable createVariableMM() {
+		Variable res = factory.createVariable();
+		res.setName("MM@");
+		res.setType(EmotionsModule.getDefault().getSortMetamodel());
+		return res;
+	}
+	
+	/**
 	 * It produces constant: mt
 	 */
 	public Constant getConstantEmpty() {
@@ -64,4 +99,68 @@ public class MyMaudeFactory {
 		res.setOp("mt");
 		return res;
 	}
+
+	/**
+	 * It produces constant: none
+	 */
+	public Constant getConstantNone() {
+		return getConstant("none");
+	}
+	
+	/**
+	 * It produces a constant with op given by the string
+	 */
+	public Constant getConstant(String string) {
+		Constant res = factory.createConstant();
+		res.setOp(string);
+		return res;
+	}
+	
+	/**
+	 * It produces a RecTerm with operator given by the argument
+	 * @param op name
+	 * @return the RecTerm
+	 */
+	public RecTerm createRecTerm(String op) {
+		RecTerm res = factory.createRecTerm();
+		res.setOp(op);
+		return res;
+	}
+	
+	/**
+	 * It produces a term _:_ with arguments given by the parameter args,
+	 * representing a structural feature
+	 * @param args
+	 * @return the RecTerm
+	 */
+	public RecTerm createStructuralFeature(List<Term> args) {
+		RecTerm res = createRecTerm(MaudeOperators.SF);
+		res.getArgs().addAll(args);
+		return res;
+	}
+	
+	/**
+	 * It produces a term _`,_ with arguments given by the parameter args,
+	 * representing a structural feature set.
+	 * @param args
+	 * @return the RecTerm
+	 */
+	public RecTerm createStructuralFeatureSet(List<Term> args) {
+		RecTerm res = createRecTerm(MaudeOperators.SFS_SET);
+		res.getArgs().addAll(args);
+		return res;
+	}
+	/**
+	 * Given its three arguments, it returns an object
+	 * @param args
+	 * @return the RecTerm
+	 */
+	public RecTerm createObject(Term id, Term cid, Term sfs) {
+		RecTerm res = createRecTerm(MaudeOperators.OBJECT);
+		res.getArgs().add(id); 
+		res.getArgs().add(cid);
+		res.getArgs().add(sfs);
+		return res;
+	}
+
 }

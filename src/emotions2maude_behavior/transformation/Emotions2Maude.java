@@ -3,6 +3,7 @@ package emotions2maude_behavior.transformation;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import Maude.Constant;
 import Maude.Equation;
 import Maude.MaudeFactory;
 import Maude.MaudeSpec;
+import Maude.MaudeTopEl;
 import Maude.ModElement;
 import Maude.ModImportation;
 import Maude.ModuleIdModExp;
@@ -30,6 +32,7 @@ import behavior.Pattern;
 import behavior.PatternEl;
 import behavior.Rule;
 import behavior.Variable;
+import emotions2maude_behavior.transformation.utils.MaudeOperators;
 import gcs.MetamodelGD;
 
 public class Emotions2Maude {
@@ -224,13 +227,7 @@ public class Emotions2Maude {
 		MyMaudeFactory _maudeFact = MyMaudeFactory.getDefault();
 		
 		/* operator */
-		/* op <nac>@<rule> : Set Set{@Object} @Model -> Bool . */
-		Operation op = factory.createOperation();
-		op.setName(name);
-		op.getArity().add(_emMod.getSortSet());
-		op.getArity().add(_emMod.getSortSetObject());
-		op.getArity().add(_emMod.getSortModel());
-		op.setCoarity(_emMod.getSortBool());
+		Operation op = createNACoperator(name);
 		
 		/* Equation with the condition */
 		Equation equation1 = factory.createEquation();
@@ -239,13 +236,12 @@ public class Emotions2Maude {
 		lhsTerm.setOp(name);
 		
 		/*
-		 * First argument is the set of Objects or Action executions in the NAC's LHS
+		 * First argument: the set of Objects or Action executions in the NAC's LHS
 		 * 
 		 * DELETE: set : Maude!RecTerm 
-		 * */
+		 */
 		RecTerm set = factory.createRecTerm(); 
 		set.setOp("Set`{_`}");
-		// setting the args
 		List<behavior.Object> objects = nac.getEls().stream()
 				.filter(x -> x instanceof behavior.Object)
 				.map(o -> (behavior.Object) o)
@@ -255,17 +251,87 @@ public class Emotions2Maude {
 				.map(o -> (ActionExec) o)
 				.collect(Collectors.toList());
 		if(objects.isEmpty() && actions.isEmpty()) {
-			// thisModule.ConstantEmpty('')
 			set.getArgs().add(_maudeFact.getConstantEmpty());
 		} else if(objects.isEmpty() && actions.size() == 1) {
-			//thisModule.PatternElOid(n."rule".objActExecLHSRule()->first())
 			set.getArgs().add(getPatternElOid(actions.get(0)));
 		} else if(objects.size() == 1 && actions.isEmpty()) {
-			//thisModule.PatternElOid(n."rule".objActExecLHSRule()->first())
 			set.getArgs().add(getPatternElOid(objects.get(0)));
 		} else {
-			// thisModule.ManyPatternElOid(n."rule")
+			set.getArgs().add(getManyPatternElOid(objects, actions));
 		}
+		
+		lhsTerm.getArgs().add(set);
+		
+		/*
+		 * Second argument: the set of Variables in the NAC's LHS
+		 */
+		if(nac.getRule().getVbles().isEmpty()) {
+			/* thisModule.VariableEmpty('') */
+			set.getArgs().add(_maudeFact.getConstantNone());
+		} else if(nac.getRule().getVbles().size() == 1) {
+			/* thisModule.CreateVar(n."rule".vbles -> first(),1) */
+			set.getArgs().add(new CreateVariable(nac.getRule().getVbles().get(0), 1).get());
+		} else {
+			/* thisModule.CreateSetVar(n."rule") */
+			set.getArgs().add(new CreateSetVariables(nac.getRule().getVbles()).get());
+		}
+		
+		/* 
+		 * Third argument: NAC elements, both objects and action executions
+		 */
+		
+		/*
+		 * 	lazy rule NacElements{
+			from
+				n : Behavior!Pattern
+			to
+				model : Maude!RecTerm(
+					op <- thisModule.modelOperator, -- '_{_}'
+					type <- thisModule.sortModel,
+					args <- Sequence{mm,lhsTermArgs}
+				),
+				mm : Maude!Variable( 
+					name <- thisModule.oidMetamodel,
+					type <- thisModule.sortMetamodel
+					),
+				lhsTermArgs : Maude!RecTerm(
+					op <- thisModule.objSetOperator,
+					type <- thisModule.sortSetObject,
+					args <-  			
+							Sequence{
+							n.patternObjActExec()->collect(i|if i.oclIsTypeOf(Behavior!Object) then thisModule.Object2RecTerm(i,n)
+															else thisModule.ActEx2RecTerm(i,true)
+															endif),
+							thisModule.CreateOBJSET('')
+							}				
+					)
+			do{
+				for (p in n.ActionExecEls()){
+					for (q in p.participants){
+						thisModule.countORAE <- thisModule.countORAE +1;
+						lhsTermArgs.args <- lhsTermArgs.args -> union(Sequence{thisModule.CreateObjRoleActionExec(q,thisModule.countORAE)});								
+						--crlpre.conds <- crlpre.conds -> prepend(thisModule.CondInitializeVar('OR'+thisModule.counter.toString()+'@'+p.id,thisModule.counter));
+					}
+					thisModule.countORAE <- 0;
+				}	
+				thisModule.countORAE <- 0;
+			}
+		}
+		 */
+		
+		// I'm gonna create a model
+		RecTerm model = _maudeFact.createRecTerm(MaudeOperators.MODEL);
+		Maude.Variable mm = _maudeFact.createVariableMM();
+		
+		/* lhsTermArgs : Maude!RecTerm */
+		
+		
+		for(behavior.Object obj : objects) {
+			/* thisModule.Object2RecTerm(i,n) */
+		}
+		
+		model.getArgs().add(mm);
+		
 		
 		/* rhs */
 		
@@ -281,13 +347,32 @@ public class Emotions2Maude {
 		equation2.setRhs(_maudeFact.getConstantFalse());
 		equation2.getAtts().add("owise");
 		
-		
-		
 		results.add(op);
 		results.add(equation1);
 		results.add(equation2);
 		return results;
 	}
+
+
+	/**
+	 *  Creates an operator as the following for the NAC pattern:
+	 *  
+	 *  op <nac>@<rule> : Set Set{@Object} @Model -> Bool .
+	 *  
+	 * @param name of the NAC
+	 * @return the Maude operation
+	 */
+	private Operation createNACoperator(String name) {
+		EmotionsModule _emMod = EmotionsModule.getDefault();
+		Operation res = factory.createOperation();
+		res.setName(name);
+		res.getArity().add(_emMod.getSortSet());
+		res.getArity().add(_emMod.getSortSetObject());
+		res.getArity().add(_emMod.getSortModel());
+		res.setCoarity(_emMod.getSortBool());
+		return res;
+	}
+
 
 	/**
 	 * -- It creates variable for identifiers
@@ -305,15 +390,39 @@ public class Emotions2Maude {
 	private Maude.Variable getPatternElOid(ActionExec action) {
 		Maude.Variable res = factory.createVariable();
 		res.setName(action.getId());
-		res.setType(EmotionsModule.getDefault().getOCLType());
-		return null;
+		res.setType(EmotionsModule.getDefault().getSortOCLType());
+		return res;
 	}
 	
 	private Maude.Variable getPatternElOid(behavior.Object object) {
 		Maude.Variable res = factory.createVariable();
 		res.setName(object.getId());
-		res.setType(EmotionsModule.getDefault().getOCLType());
-		return null;
+		res.setType(EmotionsModule.getDefault().getSortOCLType());
+		return res;
+	}
+	
+	/**
+	 * lazy rule ManyPatternElOid {
+	 * 	from
+	 *		r : Behavior!Rule
+	 *	to
+	 *		participantsRT : Maude!RecTerm(
+	 *			op <- thisModule.mSetOperator, --thisModule.setOperator, -- '_`,_'
+	 *			type <- thisModule.mSetSort, --thisModule.listSort, 
+	 *			args <- r.objActExecLHSRule()->collect(e|thisModule.PatternElOid(e))
+	 *		)
+	 *  }
+	 */
+	private RecTerm getManyPatternElOid(List<behavior.Object> objects, List<ActionExec> actions) {
+		RecTerm res = factory.createRecTerm();
+		res.setOp("_`,_");
+		for(behavior.Object o : objects) {
+			res.getArgs().add(getPatternElOid(o));
+		}
+		for(ActionExec a : actions) {
+			res.getArgs().add(getPatternElOid(a));
+		}
+		return res;
 	}
 
 
