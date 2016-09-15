@@ -64,7 +64,7 @@ public class MyMaudeFactory {
 	/**
 	 * It produces a variable: name:OCL-Type
 	 */
-	public Variable createVariableOCLType(String name) {
+	public Variable getVariableOCLType(String name) {
 		Variable res = factory.createVariable();
 		res.setName(name);
 		res.setType(EmotionsModule.getDefault().getSortOCLType());
@@ -74,7 +74,7 @@ public class MyMaudeFactory {
 	/**
 	 * It produces a variable: name:Oid
 	 */
-	public Variable createVariableOid(String name) {
+	public Variable getVariableOid(String name) {
 		Variable res = factory.createVariable();
 		res.setName(name);
 		res.setType(EmotionsModule.getDefault().getSortOid());
@@ -84,7 +84,7 @@ public class MyMaudeFactory {
 	/**
 	 * It produces a variable: MM@:@Metamodel
 	 */
-	public Variable createVariableMM() {
+	public Variable getVariableMM() {
 		Variable res = factory.createVariable();
 		res.setName("MM@");
 		res.setType(EmotionsModule.getDefault().getSortMetamodel());

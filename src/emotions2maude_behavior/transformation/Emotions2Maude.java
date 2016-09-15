@@ -321,13 +321,14 @@ public class Emotions2Maude {
 		
 		// I'm gonna create a model
 		RecTerm model = _maudeFact.createRecTerm(MaudeOperators.MODEL);
-		Maude.Variable mm = _maudeFact.createVariableMM();
+		Maude.Variable mm = _maudeFact.getVariableMM();
 		
 		/* lhsTermArgs : Maude!RecTerm */
 		
 		
 		for(behavior.Object obj : objects) {
 			/* thisModule.Object2RecTerm(i,n) */
+			
 		}
 		
 		model.getArgs().add(mm);

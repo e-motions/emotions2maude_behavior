@@ -117,7 +117,7 @@ public class CreateVariable extends Rule {
 		 */
 		List<Term> valueArgs = new ArrayList<>();
 		valueArgs.add(_maudeFact.getConstant("value@Variable@MGBehavior"));
-		valueArgs.add(_maudeFact.createVariableOCLType(behVar.getName()));
+		valueArgs.add(_maudeFact.getVariableOCLType(behVar.getName()));
 		RecTerm value = _maudeFact.createStructuralFeature(valueArgs);
 		
 		/*
@@ -138,7 +138,7 @@ public class CreateVariable extends Rule {
 			type <- thisModule.sortOid
 			),
 		 */
-		Maude.Variable id = _maudeFact.createVariableOid(name);
+		Maude.Variable id = _maudeFact.getVariableOid(name);
 		
 		/*
 		 * varClass : Maude!Constant(
