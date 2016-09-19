@@ -5,8 +5,8 @@ import main.java.transformation.MyMaudeFactory;
 
 public abstract class Rule {
 	
-	MyMaudeFactory _maudeFact;
-	private Term res;
+	protected MyMaudeFactory _maudeFact;
+	protected Term res;
 	
 	public Rule() {
 		_maudeFact = MyMaudeFactory.getDefault();

@@ -65,6 +65,7 @@ public class Object2RecTermLHS extends Rule {
 					type <- thisModule.sortSetSfi
 					)
 		}
+	
 	 */
 	public Object2RecTermLHS(behavior.Object obj, Pattern pattern) {
 		super();

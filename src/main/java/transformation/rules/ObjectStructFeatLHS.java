@@ -1,5 +1,14 @@
 package main.java.transformation.rules;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EReference;
+
+import Maude.Term;
+import behavior.Link;
 import behavior.Pattern;
 import main.java.exceptions.NotValidArgumentsE2MException;
 
@@ -25,7 +34,21 @@ import main.java.exceptions.NotValidArgumentsE2MException;
  *	 				->append(sfeat)
  *			)
  *  }
+ * </pre>
  * 
+ * ## RefWithoutDuplicates helper
+ * <pre>
+ * helper def : RefWithoutDuplicates( inCollection : Sequence(Behavior!Link) ) : Sequence(Behavior!EReference) =
+ *	inCollection -> iterate(e; outCollection : Sequence(Behavior!EReference) = Sequence{} |
+ *		if outCollection ->one(i|i=e.ref) then outCollection
+ *		else outCollection ->append(e.ref)
+ *		endif);
+ * </pre>
+ * 
+ * ## AllObjectReferences helper
+ * <pre>
+ * helper def : AllObjectReferences(r:Sequence(Behavior!EReference),op:Sequence(Behavior!EReference)) : Sequence(Behavior!EReference) =
+ *	 r->union(op)->asSet()->asSequence();
  * </pre>
  * 
  * @precondition The object has at least one *needed* structural feature. By needed we mean:
@@ -48,11 +71,41 @@ public class ObjectStructFeatLHS extends Rule {
 
 	@Override
 	public void transform() {
+		List<Term> sfsArgs = new ArrayList<>();
+		
 		/* 
 		 * Links to references 
 		 * 
 		 */
+		List<EReference> references = refWithoutDuplicates(obj.getOutLinks());
+		for (EReference ref : references) {
+			// Links2RecTerm
+		}
+		/*
+		 * Slots
+		 */
 		
+		sfsArgs.add(_maudeFact.getVariableSFS(obj));
+		res = _maudeFact.createStructuralFeatureSet(sfsArgs);
+	}
+	
+	/**
+	 * Given a list of behavior links, it returns a list of references without duplicated references.
+	 * 
+	 * The ATL code is:
+	 * <pre>
+	 * helper def : RefWithoutDuplicates( inCollection : Sequence(Behavior!Link) ) : Sequence(Behavior!EReference) =
+	 *	inCollection -> iterate(e; outCollection : Sequence(Behavior!EReference) = Sequence{} |
+	 *		if outCollection ->one(i|i=e.ref) then outCollection
+	 *		else outCollection ->append(e.ref)
+	 *		endif);
+	 * </pre>
+	 * 
+	 * @param links
+	 * @return list of EReferences
+	 */
+	private List<EReference> refWithoutDuplicates(List<Link> links) {
+		return links.stream().map(l -> (EReference) l.getRef()).distinct().collect(Collectors.toList());
 	}
 
 }

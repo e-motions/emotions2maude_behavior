@@ -24,16 +24,20 @@ A Maude object is represented by the operator `<_:_|_> : Oid Cid StructuralFeatu
 has the same name as the behavior object has. As for the sort, we use the `OCL-Type`.
 - **Cid**: For the `Cid` we use a variable which is the class name in upper case and each package is appended using the `@` symbol. The sort of such variable is the Maude sort used for such class.
 - **StructuralFeatures**: The most complex part. We distinguish if StructuralFeatures are needed for such object or not. They are needed if output links or slots are present in the object.
-# Done
 
+### Optimizations
+
+#### 1. Links
 
 
 ## TO-DO
 
-1. Rules information
-2. MTEs
-3. Module importations
+1. Why is needed to have into account the opposite links? maybe the readjust to set
+them up to null if deleted?
 
 ### little to-dos
 - do not have singleton instances, they depend on the transformations.
+- change get by create in MyMaudeFactory.
+
+### little dones
 - `EmotionsModule`: change getters for hashmap with names.
