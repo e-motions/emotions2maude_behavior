@@ -27,3 +27,7 @@ This file is intended to document the transformation from e-Motions behavior mod
 1. Rules information
 2. MTEs
 3. Module importations
+
+### little to-dos
+- do not have singleton instances, they depend on the transformations.
+- `EmotionsModule`: change getters for hashmap with names.

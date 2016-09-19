@@ -166,15 +166,20 @@ public class MyMaudeFactory {
 	
 	/**
 	 * Given a behavior Object, it generates a Variable representing its class.
-	 * A variable should be generated for inheritance purposes
+	 * A variable should be generated for inheritance purposes. The statements in ATL is
+	 * <pre>
+	 * objClass : Maude!Variable(
+	 *		name <- obj.classGD.class.maudeName().toUpper()+'@'+obj.id+'@CLASS',
+	 *		type <- thisModule.Class2Sort(obj.classGD.class)
+	 *	),
+	 * </pre>
 	 * @param behObj Behavior Object
 	 * @return the variable representing such class.
 	 */
 	public Variable getVariableObjectClass(behavior.Object behObj) {
 		Variable res = factory.createVariable();
-		/* obj.classGD.class.maudeName().toUpper()+'@'+obj.id+'@CLASS', */
-		
-		res.setName("");
+		res.setName(MaudeIdentifiers.classVariableName(behObj));
+		res.setType(EmotionsModule.getDefault().getSort(MaudeIdentifiers.class2sort(behObj)));
 		return null;
 	}
 
