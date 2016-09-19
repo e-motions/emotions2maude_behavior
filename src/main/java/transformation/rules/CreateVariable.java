@@ -1,4 +1,4 @@
-package main.java.transformation;
+package main.java.transformation.rules;
 
 import java.util.ArrayList;
 import java.util.List;

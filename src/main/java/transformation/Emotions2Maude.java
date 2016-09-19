@@ -26,6 +26,8 @@ import behavior.Behavior;
 import behavior.Pattern;
 import behavior.Rule;
 import gcs.MetamodelGD;
+import main.java.transformation.rules.CreateSetVariables;
+import main.java.transformation.rules.CreateVariable;
 import main.java.transformation.utils.MaudeOperators;
 
 public class Emotions2Maude {

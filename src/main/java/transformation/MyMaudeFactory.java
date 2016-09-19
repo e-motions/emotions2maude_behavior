@@ -180,7 +180,14 @@ public class MyMaudeFactory {
 		Variable res = factory.createVariable();
 		res.setName(MaudeIdentifiers.classVariableName(behObj));
 		res.setType(EmotionsModule.getDefault().getSort(MaudeIdentifiers.class2sort(behObj)));
-		return null;
+		return res;
+	}
+
+	public Variable getVariableSFS(behavior.Object obj) {
+		Variable res = factory.createVariable();
+		res.setName(MaudeIdentifiers.sfs(obj));
+		res.setType(EmotionsModule.getDefault().getSort("Set{@StructuralFeatureInstance}"));
+		return res;
 	}
 
 }

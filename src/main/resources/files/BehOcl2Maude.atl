@@ -4966,7 +4966,6 @@ lazy rule Object2RecTerm{
 					else
 						Sequence{id,objClass,
 							if ((obj.outLinks -> isEmpty() and obj.OppositeLinks()->isEmpty())and(obj.sfs -> isEmpty())) then sfeat
-							--if ((obj.outLinks -> isEmpty())and(obj.sfs -> isEmpty())) then sfeat
 							else thisModule.ObjectArgmsLHS(p,obj,sfeat) 							
 							endif
 							}

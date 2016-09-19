@@ -7,10 +7,6 @@ import gcs.ClassGD;
 
 public final class MaudeIdentifiers {
 
-	public MaudeIdentifiers() {
-	}
-	
-	
 	/**
 	 * The original call sentences could be something
 	 * like the following: <code>obj.classGD.class.maudeName().toUpper()+'@'+obj.id+'@CLASS'</code>
@@ -88,6 +84,10 @@ public final class MaudeIdentifiers {
 		EClass eclass = (EClass) classGD.getClass_();
 		return eclass.getEPackage() == null? eclass.getName() 
 				: eclass.getName() + "@" + getPackageName(eclass.getEPackage());
+	}
+
+	public static String sfs(behavior.Object obj) {
+		return obj.getId() + "@SFS";
 	}
 
 }
