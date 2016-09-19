@@ -1,9 +1,19 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
+
+import org.eclipse.emf.ecore.EClass;
 
 import Maude.RecTerm;
 import Maude.Term;
 import behavior.Pattern;
+import gcs.ClassGD;
 
+/**
+ * This class transforms a Behavior!Object into a Maude object.
+ * The id of the Maude object is the id of the behavior object.
+ * The class of the Maude object is the name of the operator given by the method: 
+ * @author amoreno
+ *
+ */
 public class Object2RecTerm extends Rule {
 	
 	private behavior.Object behObj;
@@ -63,9 +73,12 @@ public class Object2RecTerm extends Rule {
 
 	@Override
 	public void transform() {
+		/* the variable to match the Oid of the object */
 		Maude.Variable id = _maudeFact.getVariableOCLType(behObj.getId());
-		Maude.Variable objClass;
-
+		/* TODO */
+		Maude.Variable objClass = _maudeFact.getVariableObjectClass(behObj);
+		
+		
 	}
 
 	@Override

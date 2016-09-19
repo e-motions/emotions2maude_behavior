@@ -3,3 +3,4 @@
 .classpath
 **/*.asm
 /bin
+/target/

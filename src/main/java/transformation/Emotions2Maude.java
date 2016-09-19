@@ -1,9 +1,8 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,28 +11,22 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import Maude.Constant;
 import Maude.Equation;
 import Maude.MaudeFactory;
 import Maude.MaudeSpec;
-import Maude.MaudeTopEl;
 import Maude.ModElement;
 import Maude.ModImportation;
 import Maude.ModuleIdModExp;
 import Maude.Operation;
 import Maude.RecTerm;
 import Maude.SModule;
-import Maude.Term;
 import behavior.ActionExec;
 import behavior.AtomicRule;
 import behavior.Behavior;
-import behavior.Object;
 import behavior.Pattern;
-import behavior.PatternEl;
 import behavior.Rule;
-import behavior.Variable;
-import emotions2maude_behavior.transformation.utils.MaudeOperators;
 import gcs.MetamodelGD;
+import main.java.transformation.utils.MaudeOperators;
 
 public class Emotions2Maude {
 	
@@ -56,14 +49,18 @@ public class Emotions2Maude {
 	 * @param pw
 	 */
 	public Emotions2Maude(File behModel, File gcsModel, File maudeModel, PrintWriter pw) {
+		this(behModel, gcsModel, maudeModel);
+		
 		this.pw = pw;
-		
-		modelManager = new ModelManager(behModel, gcsModel, maudeModel);
-		factory = MaudeFactory.eINSTANCE;
-		
 	}
 	
 	
+	public Emotions2Maude(File behModel, File gcsModel, File maudeModel) {
+		modelManager = new ModelManager(behModel, gcsModel, maudeModel);
+		factory = MaudeFactory.eINSTANCE;
+	}
+
+
 	public Emotions2Maude runTransformation() {
 		/* Model elements */
 		SModule smod;
@@ -499,7 +496,7 @@ public class Emotions2Maude {
 	 * Initializes the transformation setting the class members (targeting the input model) 
 	 * to its proper values.
 	 */
-	private void init() {
+	public void init() {
 		/* Get the behavior object */
 		beh = (Behavior) modelManager.getBehModel().getContents().get(0);
 	}
@@ -525,7 +522,8 @@ public class Emotions2Maude {
 	 * @param string
 	 */
 	private void debug(String string) {
-		pw.println("  - " + string);
+		if (pw != null)
+			pw.println("  - " + string);
 	}
 
 	/**
@@ -540,5 +538,13 @@ public class Emotions2Maude {
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	public ModelManager getModelManager() {
+		return modelManager;
+	}
+	
+	public Behavior getBehavior() {
+		return beh;
 	}
 }

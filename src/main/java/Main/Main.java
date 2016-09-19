@@ -1,16 +1,16 @@
-package emotions2maude_behavior.Main;
+package main.java.Main;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
-import emotions2maude_behavior.transformation.Emotions2Maude;
+import main.java.transformation.Emotions2Maude;
 
 public class Main {
 	
-	private static String BEH_TRAJECTORY = "test/trajectory/trajectory.behavior";
-	private static String GCS_TRAJECTORY = "test/trajectory/trajectory.gcs";
-	private static String MAUDE_TRAJECTORY = "test/trajectory/outs/outtrajectory.xmi";
+	private static String BEH_TRAJECTORY = "src/test/resources/trajectory/trajectory.behavior";
+	private static String GCS_TRAJECTORY = "src/test/resources/trajectory/trajectory.gcs";
+	private static String MAUDE_TRAJECTORY = "src/test/resources/trajectory/outs/outtrajectory.xmi";
 
 	public static void main(String[] args) {
 		

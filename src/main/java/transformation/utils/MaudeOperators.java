@@ -1,4 +1,4 @@
-package emotions2maude_behavior.transformation.utils;
+package main.java.transformation.utils;
 
 public final class MaudeOperators {
 	

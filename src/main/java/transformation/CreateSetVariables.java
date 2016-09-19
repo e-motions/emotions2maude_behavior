@@ -1,10 +1,10 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Maude.RecTerm;
-import emotions2maude_behavior.transformation.utils.MaudeOperators;
+import main.java.transformation.utils.MaudeOperators;
 
 public class CreateSetVariables extends Rule {
 	

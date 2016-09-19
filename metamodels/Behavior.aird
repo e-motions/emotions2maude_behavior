@@ -2,10 +2,14 @@
 <viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_CKycwG6DEeaGv_j1ZX_31A" selectedViews="_CoN_oG6DEeaGv_j1ZX_31A _CoXwoG6DEeaGv_j1ZX_31A _CocpIG6DEeaGv_j1ZX_31A _ComaIG6DEeaGv_j1ZX_31A" version="11.0.0.201604141600">
   <semanticResources>Behavior.ecore</semanticResources>
   <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
-  <semanticResources>../src/org/eclipse/m2m/atl/emotions2maude_behavior/files/BehOcl2Maude.atl</semanticResources>
-  <semanticResources>../test/trajectory/DefaultName.ecore</semanticResources>
   <semanticResources>Maude.ecore</semanticResources>
   <semanticResources>GCS.ecore</semanticResources>
+  <semanticResources>../src/main/resources/org/eclipse/m2m/atl/emotions2maude_behavior/files/BehOcl2Maude.atl</semanticResources>
+  <semanticResources>../src/test/resources/trajectory/DefaultName.ecore</semanticResources>
+  <semanticResources>../src/test/resources/trajectory/trajectory.behavior</semanticResources>
+  <semanticResources>../src/test/resources/trajectory/trajectory.gcs</semanticResources>
+  <semanticResources>../src/test/resources/trajectory/outs/legacy_maudeout.xmi</semanticResources>
+  <semanticResources>../src/test/resources/trajectory/outs/outtrajectory.xmi</semanticResources>
   <ownedViews xmi:type="viewpoint:DView" xmi:id="_CoN_oG6DEeaGv_j1ZX_31A">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
     <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_D4eGkG6DEeaGv_j1ZX_31A" name="behavior class diagram">

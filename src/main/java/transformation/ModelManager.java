@@ -1,4 +1,4 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class ModelManager {
 	private ResourceSet resourceSet;
 	
 	public ModelManager(File behaviorModel, File gcsModel, File maudeModel) {
-		
 		
 		/* initialize resource set and packages */
 		resourceSet = this.initEMF();

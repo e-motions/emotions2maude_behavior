@@ -1,4 +1,4 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.emotions2maude_behavior;
+package main.resources;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;

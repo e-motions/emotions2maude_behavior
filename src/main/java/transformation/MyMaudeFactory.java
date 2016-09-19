@@ -1,4 +1,4 @@
-package emotions2maude_behavior.transformation;
+package main.java.transformation;
 
 import java.util.List;
 
@@ -7,7 +7,8 @@ import Maude.MaudeFactory;
 import Maude.RecTerm;
 import Maude.Term;
 import Maude.Variable;
-import emotions2maude_behavior.transformation.utils.MaudeOperators;
+import main.java.transformation.common.MaudeIdentifiers;
+import main.java.transformation.utils.MaudeOperators;
 
 public class MyMaudeFactory {
 	
@@ -161,6 +162,20 @@ public class MyMaudeFactory {
 		res.getArgs().add(cid);
 		res.getArgs().add(sfs);
 		return res;
+	}
+	
+	/**
+	 * Given a behavior Object, it generates a Variable representing its class.
+	 * A variable should be generated for inheritance purposes
+	 * @param behObj Behavior Object
+	 * @return the variable representing such class.
+	 */
+	public Variable getVariableObjectClass(behavior.Object behObj) {
+		Variable res = factory.createVariable();
+		/* obj.classGD.class.maudeName().toUpper()+'@'+obj.id+'@CLASS', */
+		
+		res.setName("");
+		return null;
 	}
 
 }

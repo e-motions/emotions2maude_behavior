@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.m2m.atl.emotions2maude_behavior.files;
+package main.resources.files;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,7 +102,6 @@ public class BehOcl2Maude {
 	public BehOcl2Maude() throws IOException {
 		properties = new Properties();
 		properties.load(getFileURL("BehOcl2Maude.properties").openStream());
-		EPackage.Registry.INSTANCE.put(getMetamodelUri("Behavior"), behavior.BehaviorPackage.eINSTANCE);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 	}
 	
