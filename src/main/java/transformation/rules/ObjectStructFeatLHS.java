@@ -1,10 +1,12 @@
 package main.java.transformation.rules;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EReference;
 
 import Maude.Term;
@@ -77,9 +79,64 @@ public class ObjectStructFeatLHS extends Rule {
 		 * Links to references 
 		 * 
 		 */
-		List<EReference> references = refWithoutDuplicates(obj.getOutLinks());
-		for (EReference ref : references) {
+		Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
+		for (EReference ref : references.keySet()) {
 			// Links2RecTerm
+			/**
+			 * This is where we will perform  the optimizations
+			 * 
+			 * lazy rule Links2RecTerm{
+			 *	from		
+			 *		linkRef : Behavior!EReference,
+			 *		objId : String
+			 *	to
+			 *		ref : Maude!RecTerm(
+			 *			op <- thisModule.sfsOperator, -- '_:_'
+			 *			type <- thisModule.sortRefInst,
+			 *			args <- Sequence{constSF,varSF}
+			 *			),
+			 *		constSF : Maude!Constant(
+			 *			op <-  linkRef.maudeName().processSpecOpChars(),
+			 *			type <- thisModule.sortRefSimple		
+			 *			),
+			 *		varSF : Maude!Variable(
+			 * 			name <- linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT', --link.target.id, --.toUpper() + '@' + link.src.id + '@ATT' ,
+			 *			type <- thisModule.oclTypeSort --thisModule.collectionSort  
+			 *			)
+			 *	}
+			 */
+			/*
+			 * Kinds of relations:
+			 *  - unitary
+			 *  - collections
+			 *  	- ordered
+			 *  	- unique
+			 */
+			if (ref.getUpperBound() == 1) {
+				// it is unique and its the simplest thing
+				
+			} else {
+				// it is a collection
+				/*
+				 * Steps to perform this:
+				 * 	- check the kind of collection
+				 *  - check the number of links for each reference
+				 */
+				if (ref.isOrdered() && !ref.isUnique() && references.get(ref).size() == 1) {
+					// List
+					/* if the size is greater than 1, it cannot be set in the matching */
+				} else if (ref.isOrdered() && ref.isUnique() && references.get(ref).size() == 1) {
+					// OrderedSet
+					/* if the size is greater than 1, it cannot be set in the matching */
+				} else if (!ref.isOrdered() && !ref.isUnique()) {
+					// Bag
+					
+				} else if (!ref.isOrdered() && !ref.isUnique()) {
+					// Set
+				} else {
+					/* it should be done as in the legacy transformation */
+				}
+			}
 		}
 		/*
 		 * Slots
@@ -90,7 +147,7 @@ public class ObjectStructFeatLHS extends Rule {
 	}
 	
 	/**
-	 * Given a list of behavior links, it returns a list of references without duplicated references.
+	 * Given a list of behavior links, it returns a Map association EReferences to Links.
 	 * 
 	 * The ATL code is:
 	 * <pre>
@@ -102,10 +159,15 @@ public class ObjectStructFeatLHS extends Rule {
 	 * </pre>
 	 * 
 	 * @param links
-	 * @return list of EReferences
+	 * @return map of EReferences
 	 */
-	private List<EReference> refWithoutDuplicates(List<Link> links) {
-		return links.stream().map(l -> (EReference) l.getRef()).distinct().collect(Collectors.toList());
+	private Map<EReference, List<Link>> mapRef2Links(List<Link> links) {
+		Set<EReference> refs = links.stream().map(r -> (EReference) r.getRef()).collect(Collectors.toSet());
+		Map<EReference, List<Link>> res = new HashMap<EReference, List<Link>>();
+		for (EReference r : refs) {
+			res.put(r, links.stream().filter(ref -> (ref.getRef() == r)).collect(Collectors.toList()));
+		}
+		return res;
 	}
 
 }
