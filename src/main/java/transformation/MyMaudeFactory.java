@@ -182,11 +182,30 @@ public class MyMaudeFactory {
 		res.setType(EmotionsModule.getDefault().getSort(MaudeIdentifiers.class2sort(behObj)));
 		return res;
 	}
-
+	
+	/**
+	 * Given a behavior object, it creates the variable to match with the structural features not
+	 * explicitly listed in the Maude object.
+	 * @param obj
+	 * @return the created Maude variable
+	 */
 	public Variable getVariableSFS(behavior.Object obj) {
 		Variable res = factory.createVariable();
 		res.setName(MaudeIdentifiers.sfs(obj));
 		res.setType(EmotionsModule.getDefault().getSort("Set{@StructuralFeatureInstance}"));
+		return res;
+	}
+
+	/**
+	 * Given an id, it generates a variable <code>id:List{OCL-Exp}</code> used for references
+	 * inside sequences.
+	 * @param id of the variable
+	 * @return the Maude variable
+	 */
+	public Variable getVariableSequence(String id) {
+		Variable res = factory.createVariable();
+		res.setName(id);
+		res.setType(EmotionsModule.getDefault().getSort("List{OCL-Exp}"));
 		return res;
 	}
 

@@ -19,7 +19,6 @@ import main.java.exceptions.NotValidArgumentsE2MException;
  * 
  * The ATL rule is the following:
  * <pre>
- * 
  * lazy rule ObjectArgmsLHS{
  *	from
  *		p : Behavior!Pattern,
@@ -82,61 +81,7 @@ public class ObjectStructFeatLHS extends Rule {
 		Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
 		for (EReference ref : references.keySet()) {
 			// Links2RecTerm
-			/**
-			 * This is where we will perform  the optimizations
-			 * 
-			 * lazy rule Links2RecTerm{
-			 *	from		
-			 *		linkRef : Behavior!EReference,
-			 *		objId : String
-			 *	to
-			 *		ref : Maude!RecTerm(
-			 *			op <- thisModule.sfsOperator, -- '_:_'
-			 *			type <- thisModule.sortRefInst,
-			 *			args <- Sequence{constSF,varSF}
-			 *			),
-			 *		constSF : Maude!Constant(
-			 *			op <-  linkRef.maudeName().processSpecOpChars(),
-			 *			type <- thisModule.sortRefSimple		
-			 *			),
-			 *		varSF : Maude!Variable(
-			 * 			name <- linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT', --link.target.id, --.toUpper() + '@' + link.src.id + '@ATT' ,
-			 *			type <- thisModule.oclTypeSort --thisModule.collectionSort  
-			 *			)
-			 *	}
-			 */
-			/*
-			 * Kinds of relations:
-			 *  - unitary
-			 *  - collections
-			 *  	- ordered
-			 *  	- unique
-			 */
-			if (ref.getUpperBound() == 1) {
-				// it is unique and its the simplest thing
-				
-			} else {
-				// it is a collection
-				/*
-				 * Steps to perform this:
-				 * 	- check the kind of collection
-				 *  - check the number of links for each reference
-				 */
-				if (ref.isOrdered() && !ref.isUnique() && references.get(ref).size() == 1) {
-					// List
-					/* if the size is greater than 1, it cannot be set in the matching */
-				} else if (ref.isOrdered() && ref.isUnique() && references.get(ref).size() == 1) {
-					// OrderedSet
-					/* if the size is greater than 1, it cannot be set in the matching */
-				} else if (!ref.isOrdered() && !ref.isUnique()) {
-					// Bag
-					
-				} else if (!ref.isOrdered() && !ref.isUnique()) {
-					// Set
-				} else {
-					/* it should be done as in the legacy transformation */
-				}
-			}
+			
 		}
 		/*
 		 * Slots
