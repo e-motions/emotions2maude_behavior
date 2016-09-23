@@ -3,33 +3,22 @@ package main.java.transformation;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
-import Maude.Equation;
 import Maude.MaudeFactory;
 import Maude.MaudeSpec;
-import Maude.ModElement;
 import Maude.ModImportation;
 import Maude.ModuleIdModExp;
-import Maude.Operation;
-import Maude.RecTerm;
 import Maude.SModule;
-import behavior.ActionExec;
 import behavior.AtomicRule;
 import behavior.Behavior;
-import behavior.Pattern;
 import behavior.Rule;
 import gcs.MetamodelGD;
 import main.java.Debugger;
 import main.java.transformation.rules.coarserules.AtomicRuleInstantaneousNotPeriodic;
-import main.java.transformation.rules.smallrules.CreateSetVariables;
-import main.java.transformation.rules.smallrules.CreateVariable;
-import main.java.transformation.utils.MaudeOperators;
 
 public class Emotions2Maude {
 	

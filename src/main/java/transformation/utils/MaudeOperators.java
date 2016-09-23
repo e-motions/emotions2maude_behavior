@@ -6,7 +6,7 @@ public final class MaudeOperators {
 	public static final String SFS_SET = "_#_";
 	public static final String SF = "_:_";
 	public static final String SET = "__";
-	public static final String MODEL = "_{_}";
+	public static final String MODEL = "_`{_`}";
 	
 	public static final String COLL_SEQUENCE = "Sequence`{_`}";
 	public static final String COLL_ORDERED_SET = "OrderedSet`{_`}";

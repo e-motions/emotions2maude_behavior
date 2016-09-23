@@ -12,6 +12,7 @@ import main.java.transformation.MyMaudeFactory;
  * 
  * Used by the first argument in the NACs {@link #CreateNac}.
  * 
+ * <pre>
  * lazy rule ManyPatternElOid {
  * 	from
  *		r : Behavior!Rule
@@ -22,7 +23,7 @@ import main.java.transformation.MyMaudeFactory;
  *			args <- r.objActExecLHSRule()->collect(e|thisModule.PatternElOid(e))
  *		)
  *  }
- *  
+ * </pre>
  * @author Antonio Moreno-Delgado <code>amoreno@lcc.uma.es</code>
  *
  */

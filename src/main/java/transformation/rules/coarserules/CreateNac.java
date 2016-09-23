@@ -16,6 +16,7 @@ import main.java.transformation.rules.smallrules.CreateSetVariables;
 import main.java.transformation.rules.smallrules.CreateVariable;
 import main.java.transformation.rules.smallrules.ManyPatternElOid;
 import main.java.transformation.rules.smallrules.PatternElOid;
+import main.java.transformation.rules.smallrules.PatternNAC;
 
 /**
  * 
@@ -187,11 +188,10 @@ public class CreateNac extends CoarseRule {
 		
 		lhsTerm.getArgs().add(set);
 		
-		/* TODO it should be added 
-		
 		/*
 		 * Second argument: the set of Variables in the NAC's LHS
 		 */
+		
 		if(nac.getRule().getVbles().isEmpty()) {
 			/* thisModule.VariableEmpty('') */
 			lhsTerm.getArgs().add(maudeFact.getConstantNone());
@@ -202,7 +202,11 @@ public class CreateNac extends CoarseRule {
 			/* thisModule.CreateSetVar(n."rule") */
 			lhsTerm.getArgs().add(new CreateSetVariables(maudeFact, nac.getRule().getVbles()).get());
 		}
-
+		
+		/* 
+		 * Third argument: the objects and action executions involved in the NAC 
+		 */
+		lhsTerm.getArgs().add(new PatternNAC(maudeFact).get());
 		
 		return equation1;
 	}

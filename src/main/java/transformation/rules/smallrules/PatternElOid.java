@@ -6,10 +6,13 @@ import main.java.exceptions.NotValidArgumentsE2MException;
 import main.java.transformation.MyMaudeFactory;
 
 /**
- * It creates variable for a identifier Oid.
+ * It creates variable for an identifier Oid.
+ * 
+ * Example <code>name:Oid</code>
  * 
  * Used by {@link #CreateNac}.
  * 
+ * <pre>
  *	lazy rule PatternElOid{
  *	from
  *		o : Behavior!PatternEl	
@@ -19,6 +22,7 @@ import main.java.transformation.MyMaudeFactory;
  *			type <- thisModule.oclTypeSort
  *		)
  *	}
+ * </pre>
  * 
  * @precondition It only supports Objects and ActionExec
  * 
