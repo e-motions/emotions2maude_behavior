@@ -10,6 +10,10 @@
   <semanticResources>../src/test/resources/trajectory/trajectory.gcs</semanticResources>
   <semanticResources>../src/test/resources/trajectory/outs/legacy_maudeout.xmi</semanticResources>
   <semanticResources>../src/test/resources/trajectory/outs/outtrajectory.xmi</semanticResources>
+  <semanticResources>../src/test/resources/mpns/MPNs.behavior</semanticResources>
+  <semanticResources>../src/test/resources/mpns/MPNs.gcs</semanticResources>
+  <semanticResources>../src/test/resources/mpns/MPNs.ecore</semanticResources>
+  <semanticResources>../src/test/resources/mpns/outs/legacy_output.xmi</semanticResources>
   <ownedViews xmi:type="viewpoint:DView" xmi:id="_CoN_oG6DEeaGv_j1ZX_31A">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
     <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_D4eGkG6DEeaGv_j1ZX_31A" name="behavior class diagram">

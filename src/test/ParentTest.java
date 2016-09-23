@@ -11,6 +11,7 @@ import main.java.transformation.MyMaudeFactory;
 public class ParentTest {
 	
 	public static Emotions2Maude trajectory;
+	public static Emotions2Maude mpn;
 	
 	protected static EmotionsModule emotionsMod;
 	protected static MyMaudeFactory maudeFact;
@@ -33,6 +34,13 @@ public class ParentTest {
 		String MAUDE_TRAJECTORY = "src/test/resources/trajectory/outs/outtrajectory.xmi";
 		trajectory = new Emotions2Maude(new File(BEH_TRAJECTORY), new File(GCS_TRAJECTORY), new File(MAUDE_TRAJECTORY));
 		trajectory.init();
+		
+		/* MPNs {@link http://atenea.lcc.uma.es/index.php/Main_Page/Resources/E-motions/MPNsExample} */
+		String BEH_MPN = "src/test/resources/mpns/MPNs.behavior";
+		String GCS_MPN = "src/test/resources/mpns/MPNs.gcs";
+		String MAUDE_MPN = "src/test/resources/mpns/outs/output_mpn.xmi";
+		mpn = new Emotions2Maude(new File(BEH_MPN), new File(GCS_MPN), new File(MAUDE_MPN));
+		mpn.init();
 		
 	}
 

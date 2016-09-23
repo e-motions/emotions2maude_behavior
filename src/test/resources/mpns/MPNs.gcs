@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gcs:MetamodelGD xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:gcs="http://www.lcc.uma.es/GCS/1.0" name="@MPNS@">
+  <packagesGD name="MPNs">
+    <classesGD name="Phone" figurePath="\MPNs\images\Phone.JPG">
+      <class href="MPNs.ecore#//Phone"/>
+    </classesGD>
+    <classesGD name="CallRecord" figurePath="\MPNs\images\CallRecord.JPG">
+      <class href="MPNs.ecore#//CallRecord"/>
+    </classesGD>
+    <classesGD name="Antenna" figurePath="\MPNs\images\Antenna.JPG">
+      <class href="MPNs.ecore#//Antenna"/>
+    </classesGD>
+    <classesGD name="MPN" figurePath="\MPNs\images\MPN.jpg">
+      <class href="MPNs.ecore#//MPN"/>
+    </classesGD>
+    <classesGD name="PositionedEl" figurePath="">
+      <class href="MPNs.ecore#//PositionedEl"/>
+    </classesGD>
+    <package href="MPNs.ecore#/"/>
+  </packagesGD>
+</gcs:MetamodelGD>

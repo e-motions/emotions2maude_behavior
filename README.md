@@ -14,7 +14,7 @@ A NAC consists of:
 2. Two equations are added:
     1. The *positive* equation with the following arguments (Java method `createConditionEquation`):
       - The set of objects and action execution `Oid`s in the LHS of the rule.
-        We use  
+        We use the small rules `PatternElOid` and `ManyPatternElOid`.
       - The set of variables involved in the rule. Each variable is a Maude object.
       - The elements involved in the NAC, both objects and action executions.
 
