@@ -13,4 +13,5 @@ public final class MaudeOperators {
 	public static final String COLL_SET = "Set`{_`}";
 	public static final String COLL_BAG = "Bag`{_`}";
 	public static final String ORDERED_LIST = "_#_";
+	public static final String NOT_ORDERED_LIST = "_;_";
 }

@@ -9,25 +9,17 @@ import Maude.Sort;
 
 public class EmotionsModule {
 
-	private static EmotionsModule self;
 	private static MaudeFactory factory;
 
 	private SModule mod;
 
 	private static Map<String, Sort> mappings;
 
-	private EmotionsModule() {
+	public EmotionsModule() {
+		factory = MaudeFactory.eINSTANCE;
+		mappings = new HashMap<>();
 	}
 
-	public static EmotionsModule getDefault() {
-		if (self == null) {
-			self = new EmotionsModule();
-			factory = MaudeFactory.eINSTANCE;
-			mappings = new HashMap<>();
-		}
-		return self;
-	}
-	
 	public SModule getModule() {
 		if (mod == null) {
 			mod = factory.createSModule();

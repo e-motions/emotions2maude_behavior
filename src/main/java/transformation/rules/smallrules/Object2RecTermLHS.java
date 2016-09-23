@@ -1,4 +1,4 @@
-package main.java.transformation.rules;
+package main.java.transformation.rules.smallrules;
 
 import org.eclipse.emf.ecore.EClass;
 
@@ -6,6 +6,7 @@ import Maude.RecTerm;
 import Maude.Term;
 import behavior.Pattern;
 import gcs.ClassGD;
+import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
 
 /**
@@ -67,8 +68,8 @@ public class Object2RecTermLHS extends Rule {
 		}
 	
 	 */
-	public Object2RecTermLHS(behavior.Object obj, Pattern pattern) {
-		super();
+	public Object2RecTermLHS(MyMaudeFactory maudeFact, behavior.Object obj, Pattern pattern) {
+		super(maudeFact);
 		behObj = obj;
 		behPattern = pattern;
 	}
@@ -76,9 +77,9 @@ public class Object2RecTermLHS extends Rule {
 	@Override
 	public void transform() {
 		/* the variable to match the Oid of the object */
-		Maude.Variable id = _maudeFact.getVariableOCLType(behObj.getId());
+		Maude.Variable id = maudeFact.getVariableOCLType(behObj.getId());
 		/* the variable to match de Cid of the object */
-		Maude.Variable objClass = _maudeFact.getVariableObjectClass(behObj);
+		Maude.Variable objClass = maudeFact.getVariableObjectClass(behObj);
 		/* 
 		 * if ((obj.outLinks -> isEmpty() and obj.OppositeLinks()->isEmpty())and(obj.sfs -> isEmpty())) then sfeat
 			else thisModule.ObjectArgmsLHS(p,obj,sfeat) 							
@@ -96,7 +97,7 @@ public class Object2RecTermLHS extends Rule {
 			/* thisModule.ObjectArgmsLHS(p,obj,sfeat) */
 			
 		} else {
-			structuralFeatures = _maudeFact.getVariableSFS(behObj);
+			structuralFeatures = maudeFact.getVariableSFS(behObj);
 		}
 		
 	}

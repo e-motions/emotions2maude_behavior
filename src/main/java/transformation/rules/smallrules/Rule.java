@@ -1,15 +1,15 @@
-package main.java.transformation.rules;
+package main.java.transformation.rules.smallrules;
 
 import Maude.Term;
 import main.java.transformation.MyMaudeFactory;
 
 public abstract class Rule {
 	
-	protected MyMaudeFactory _maudeFact;
+	protected MyMaudeFactory maudeFact;
 	protected Term res;
 	
-	public Rule() {
-		_maudeFact = MyMaudeFactory.getDefault();
+	public Rule(MyMaudeFactory maudeFact) {
+		this.maudeFact = maudeFact;
 	}
 	
 	public abstract void transform();

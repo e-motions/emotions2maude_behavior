@@ -1,7 +1,6 @@
-package main.java.Main;
+package test.Main;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
 import main.java.transformation.Emotions2Maude;
@@ -23,7 +22,7 @@ public class Main {
 		File gcsModel = new File(GCS_TRAJECTORY);
 		File maudeModel = new File(MAUDE_TRAJECTORY);
 		
-		Emotions2Maude mt = new Emotions2Maude(behModel, gcsModel, maudeModel, new PrintWriter(System.out, true));
+		Emotions2Maude mt = new Emotions2Maude(behModel, gcsModel, maudeModel);
 		
 		mt.runTransformation().saveOutput();
 		

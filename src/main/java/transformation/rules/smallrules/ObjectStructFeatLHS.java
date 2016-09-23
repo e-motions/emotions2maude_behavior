@@ -1,4 +1,4 @@
-package main.java.transformation.rules;
+package main.java.transformation.rules.smallrules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import Maude.Term;
 import behavior.Link;
 import behavior.Pattern;
 import main.java.exceptions.NotValidArgumentsE2MException;
+import main.java.transformation.MyMaudeFactory;
 
 /**
  * This class is intended to generate the structural features of a behavior object given by the argument.
@@ -63,7 +64,8 @@ public class ObjectStructFeatLHS extends Rule {
 	private behavior.Object obj;
 	private Pattern pattern;
 	
-	public ObjectStructFeatLHS(behavior.Object obj, Pattern pattern) {
+	public ObjectStructFeatLHS(MyMaudeFactory maudeFact, behavior.Object obj, Pattern pattern) {
+		super(maudeFact);
 		this.obj = obj;
 		if (obj.getOutLinks().isEmpty() && obj.getSfs().isEmpty())
 			throw new NotValidArgumentsE2MException("Structural features not needed for object with id " + obj.getId());
@@ -87,8 +89,8 @@ public class ObjectStructFeatLHS extends Rule {
 		 * Slots
 		 */
 		
-		sfsArgs.add(_maudeFact.getVariableSFS(obj));
-		res = _maudeFact.createStructuralFeatureSet(sfsArgs);
+		sfsArgs.add(maudeFact.getVariableSFS(obj));
+		res = maudeFact.createStructuralFeatureSet(sfsArgs);
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package main.java.transformation.rules;
+package main.java.transformation.rules.smallrules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import Maude.Constant;
 import Maude.RecTerm;
 import Maude.Term;
 import behavior.Variable;
+import main.java.transformation.MyMaudeFactory;
 
 public class CreateVariable extends Rule {
 	
@@ -70,8 +71,8 @@ public class CreateVariable extends Rule {
 	 * 
 	 *  It creates a Maude object representing an e-motions variable
 	 */
-	public CreateVariable(behavior.Variable behVar, int i) {
-		super();
+	public CreateVariable(MyMaudeFactory maudeFact, behavior.Variable behVar, int i) {
+		super(maudeFact);
 		this.behVar = behVar;
 		name = "VAR" + i + "@";
 	}
@@ -96,9 +97,9 @@ public class CreateVariable extends Rule {
 		 */
 		
 		List<Term> nameArgs = new ArrayList<>();
-		nameArgs.add(_maudeFact.getConstant("name@Variable@MGBehavior"));
-		nameArgs.add(_maudeFact.getConstant("\"" + behVar.getName() + "\""));
-		RecTerm nameRecTerm = _maudeFact.createStructuralFeature(nameArgs);
+		nameArgs.add(maudeFact.getConstant("name@Variable@MGBehavior"));
+		nameArgs.add(maudeFact.getConstant("\"" + behVar.getName() + "\""));
+		RecTerm nameRecTerm = maudeFact.createStructuralFeature(nameArgs);
 		
 		/*
 		 * value : Maude!RecTerm(
@@ -116,9 +117,9 @@ public class CreateVariable extends Rule {
 			)
 		 */
 		List<Term> valueArgs = new ArrayList<>();
-		valueArgs.add(_maudeFact.getConstant("value@Variable@MGBehavior"));
-		valueArgs.add(_maudeFact.getVariableOCLType(behVar.getName()));
-		RecTerm value = _maudeFact.createStructuralFeature(valueArgs);
+		valueArgs.add(maudeFact.getConstant("value@Variable@MGBehavior"));
+		valueArgs.add(maudeFact.getVariableOCLType(behVar.getName()));
+		RecTerm value = maudeFact.createStructuralFeature(valueArgs);
 		
 		/*
 		 * argms : Maude!RecTerm(
@@ -130,7 +131,7 @@ public class CreateVariable extends Rule {
 		List<Term> sfsArgs = new ArrayList<>();
 		sfsArgs.add(nameRecTerm);
 		sfsArgs.add(value);
-		RecTerm sfs = _maudeFact.createStructuralFeatureSet(sfsArgs);
+		RecTerm sfs = maudeFact.createStructuralFeatureSet(sfsArgs);
 		
 		/*
 		 * id : Maude!Variable(
@@ -138,7 +139,7 @@ public class CreateVariable extends Rule {
 			type <- thisModule.sortOid
 			),
 		 */
-		Maude.Variable id = _maudeFact.getVariableOid(name);
+		Maude.Variable id = maudeFact.getVariableOid(name);
 		
 		/*
 		 * varClass : Maude!Constant(
@@ -146,7 +147,7 @@ public class CreateVariable extends Rule {
 			type <- thisModule.variableSort
 			),
 		 */
-		Constant varClass = _maudeFact.getConstant("Variable@MGBehavior");
+		Constant varClass = maudeFact.getConstant("Variable@MGBehavior");
 		
 		/*
 		 * obRole : Maude!RecTerm(
@@ -155,7 +156,7 @@ public class CreateVariable extends Rule {
 			args <-	Sequence{id,varClass,argms}
 			),
 		 */
-		maudeVar = _maudeFact.createObject(id, varClass, sfs);
+		maudeVar = maudeFact.createObject(id, varClass, sfs);
 	}
 	
 	@Override

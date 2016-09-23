@@ -90,4 +90,8 @@ public final class MaudeIdentifiers {
 		return obj.getId() + "@SFS";
 	}
 
+	public static String processSpecialChars(String name) {
+		return name;
+	}
+
 }

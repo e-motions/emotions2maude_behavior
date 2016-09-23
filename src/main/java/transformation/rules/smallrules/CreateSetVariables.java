@@ -1,9 +1,10 @@
-package main.java.transformation.rules;
+package main.java.transformation.rules.smallrules;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Maude.RecTerm;
+import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.utils.MaudeOperators;
 
 public class CreateSetVariables extends Rule {
@@ -31,8 +32,8 @@ public class CreateSetVariables extends Rule {
 		}
 	}
 	 */
-	public CreateSetVariables(List<behavior.Variable> vbles) {
-		super();
+	public CreateSetVariables(MyMaudeFactory maudeFact, List<behavior.Variable> vbles) {
+		super(maudeFact);
 		counter = 1;
 		this.vbles = new ArrayList<>();
 		this.vbles.addAll(vbles);
@@ -40,9 +41,9 @@ public class CreateSetVariables extends Rule {
 
 	@Override
 	public void transform() {
-		setVariables = _maudeFact.createRecTerm(MaudeOperators.SET);
+		setVariables = maudeFact.createRecTerm(MaudeOperators.SET);
 		for(behavior.Variable var : vbles) {
-			setVariables.getArgs().add(new CreateVariable(var, counter++).get());
+			setVariables.getArgs().add(new CreateVariable(maudeFact, var, counter++).get());
 		}
 	}
 
