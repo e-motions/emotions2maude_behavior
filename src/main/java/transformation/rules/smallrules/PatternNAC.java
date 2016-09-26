@@ -1,6 +1,9 @@
 package main.java.transformation.rules.smallrules;
 
+import java.util.stream.Collectors;
+
 import Maude.RecTerm;
+import behavior.Pattern;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.utils.MaudeOperators;
 
@@ -63,9 +66,12 @@ import main.java.transformation.utils.MaudeOperators;
  *
  */
 public class PatternNAC extends Rule {
+	
+	private Pattern nac;
 
-	public PatternNAC(MyMaudeFactory maudeFact) {
+	public PatternNAC(MyMaudeFactory maudeFact, Pattern nac) {
 		super(maudeFact);
+		this.nac = nac;
 	}
 
 	@Override
@@ -75,6 +81,17 @@ public class PatternNAC extends Rule {
 		
 		Maude.RecTerm lhsTermArgs = maudeFact.createRecTerm(MaudeOperators.SET);
 		
+		/* create the model elements */
+		
+		// adding objects
+		lhsTermArgs.getArgs().addAll(nac.getEls().stream()
+				.filter(e -> e instanceof behavior.Object)
+				.map(o -> (behavior.Object) o)
+				.map(obj -> new Object2RecTermLHS(maudeFact, obj, nac).get())
+				.collect(Collectors.toList()));
+		
+		lhsTermArgs.getArgs().add(maudeFact.getVariableObjectSet());
+		/* end of model elements */
 		
 		model.getArgs().add(mm);
 		model.getArgs().add(lhsTermArgs);

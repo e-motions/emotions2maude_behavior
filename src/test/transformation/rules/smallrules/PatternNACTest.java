@@ -32,7 +32,7 @@ public class PatternNACTest extends ParentTest {
 						.filter(n -> n.getName().equals("NoArrow")).findFirst()
 						.ifPresent(na -> trajectoryNoArrow = na));
 		if (trajectoryNoArrow != null) {
-			outModel = new PatternNAC(maudeFact).get();
+			outModel = new PatternNAC(maudeFact, trajectoryNoArrow).get();
 		} else {
 			fail();
 		}
@@ -69,8 +69,13 @@ public class PatternNACTest extends ParentTest {
 	@Test
 	public void trajectoryNoArrowOBJECTSETVariable() {
 		RecTerm model = (RecTerm) outModel;
-		RecTerm args = (RecTerm) model.getArgs().get(1);
-		Optional<Maude.Variable> var;
+		RecTerm objects = (RecTerm) model.getArgs().get(1);
+		Optional<Maude.Variable> var = objects.getArgs().stream()
+										.filter(a -> a instanceof Maude.Variable)
+										.map(v -> (Maude.Variable) v)
+										.findFirst();
+		assertTrue(var.isPresent());
+		assertEquals(var.get().getType().getName(), "Set{@Object}");
 	}
 
 }

@@ -14,11 +14,25 @@ A NAC consists of:
 2. Two equations are added:
     1. The *positive* equation with the following arguments (Java method `createConditionEquation`):
       - The set of objects and action execution `Oid`s in the LHS of the rule.
-        We use the small rules `PatternElOid` and `ManyPatternElOid`.
+        - If there is no objects or actions in the LHS of the rule, a `empty` term is
+        created by the method `getConstantEmpty` in the `MyMaudeFactory` class.
+        - If there is an object or action in the rule's LHS, a variable is created
+        using the `PatternElOid` Java class.
+        - If there are more than one object or/and action, several variables are created using the `ManyPatternElOid` Java class.
       - The set of variables involved in the rule. Each variable is a Maude object.
-      - The elements involved in the NAC, both objects and action executions.
+        - If no variables are involved, it should create a `none` term. Created by
+        the `getConstantNone` method in `MyMaudeFactory` Java class.
+        - If there is *one* variable, such term is created by the `CreateVariable`
+        Java class.
+        - If more than one variable should be created, the class `CreateSetVariables`
+        is used.
+      - The elements involved in the NAC, both objects and action executions. This
+      is the most complex part of the NAC, since we have to create the pattern of the
+      NAC here. The main Java class is `PatternNAC`. This class creates a metamodel
+      of the form `MM { Model }`, where `Model` will be a set of the objects and
+      actions that appear in the NAC pattern. Moreover we will add a variable to be
+      match with the rest of the current state.
 
-      The creation of this equation involves several Java classes and elements.
     2. The *negative* equation with the following arguments (Java method `createOwiseEquation`):
       - A variable `OIDSET@:Set`.
       - A variable `OBJSET@:Set{@Object}`.

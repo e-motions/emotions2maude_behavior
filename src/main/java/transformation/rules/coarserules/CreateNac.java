@@ -206,7 +206,7 @@ public class CreateNac extends CoarseRule {
 		/* 
 		 * Third argument: the objects and action executions involved in the NAC 
 		 */
-		lhsTerm.getArgs().add(new PatternNAC(maudeFact).get());
+		lhsTerm.getArgs().add(new PatternNAC(maudeFact, nac).get());
 		
 		return equation1;
 	}
