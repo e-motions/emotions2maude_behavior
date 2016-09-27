@@ -31,8 +31,16 @@ A NAC consists of:
       NAC here. The main Java class is `PatternNAC`. This class creates a metamodel
       of the form `MM { Model }`, where `Model` will be a set of the objects and
       actions that appear in the NAC pattern. Moreover we will add a variable to be
-      match with the rest of the current state.
-
+      matched with the rest of the current state. As for the `Model`, we need to
+      provide all the objects and action executions:
+        - *Objects*: The Java class `Object2RecTermLHS` is intended to create such
+        objects. An object is a `RecTerm` with the operator `<_:_|_>`, with a variable
+        for the Oid with type `OCL-Type`, a variable for the class with type its class (thus allowing inheritance), and a set of structural features. The set of
+        structural features depends on whether there is any slot or out link in the
+        behavior object. If any or if not, we also add a variable of type
+        `Set{@StructuralFeatureInstance}`  to match all the remaining structural features.
+        For the out links and slots, we use the Java class `ObjectStructFeatLHS`.
+        
     2. The *negative* equation with the following arguments (Java method `createOwiseEquation`):
       - A variable `OIDSET@:Set`.
       - A variable `OBJSET@:Set{@Object}`.
