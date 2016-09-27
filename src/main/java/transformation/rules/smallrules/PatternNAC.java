@@ -84,11 +84,11 @@ public class PatternNAC extends Rule {
 		/* create the model elements */
 		
 		// adding objects
-		lhsTermArgs.getArgs().addAll(nac.getEls().stream()
-				.filter(e -> e instanceof behavior.Object)
-				.map(o -> (behavior.Object) o)
-				.map(obj -> new Object2RecTermLHS(maudeFact, obj, nac).get())
-				.collect(Collectors.toList()));
+//		lhsTermArgs.getArgs().addAll(nac.getEls().stream()
+//				.filter(e -> e instanceof behavior.Object)
+//				.map(o -> (behavior.Object) o)
+//				.map(obj -> new Object2RecTermLHS(maudeFact, obj, nac).get())
+//				.collect(Collectors.toList()));
 		
 		lhsTermArgs.getArgs().add(maudeFact.getVariableObjectSet());
 		/* end of model elements */

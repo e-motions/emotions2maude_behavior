@@ -12,13 +12,15 @@ import org.eclipse.emf.ecore.EReference;
 import Maude.Term;
 import behavior.Link;
 import behavior.Pattern;
-import main.java.exceptions.NotValidArgumentsE2MException;
 import main.java.transformation.MyMaudeFactory;
 
 /**
  * This class is intended to generate the structural features of a behavior object given by the argument.
  * 
- * The ATL rule is the following:
+ * We are not following precisely this rule, instead, we return even just a variable in the case we do 
+ * not need structural features.
+ * 
+ * The legacy ATL rule is the following:
  * <pre>
  * lazy rule ObjectArgmsLHS{
  *	from
@@ -67,30 +69,31 @@ public class ObjectStructFeatLHS extends Rule {
 	public ObjectStructFeatLHS(MyMaudeFactory maudeFact, behavior.Object obj, Pattern pattern) {
 		super(maudeFact);
 		this.obj = obj;
-		if (obj.getOutLinks().isEmpty() && obj.getSfs().isEmpty())
-			throw new NotValidArgumentsE2MException("Structural features not needed for object with id " + obj.getId());
 		this.pattern = pattern;
 	}
 
 	@Override
 	public void transform() {
-		List<Term> sfsArgs = new ArrayList<>();
-		
-		/* 
-		 * Links to references 
-		 * 
-		 */
-		Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
-		for (EReference ref : references.keySet()) {
-			// Links2RecTerm
+		if (obj.getOutLinks().size() + obj.getSfs().size() == 0) {
+			res = maudeFact.getVariableSFS(obj);
+		} else {
+			List<Term> sfsArgs = new ArrayList<>();
+			/* 
+			 * Links to references 
+			 * 
+			 */
+			Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
+			for (EReference ref : references.keySet()) {
+				// Links2RecTerm
+				
+			}
+			/*
+			 * Slots
+			 */
 			
+			sfsArgs.add(maudeFact.getVariableSFS(obj));
+			res = maudeFact.createStructuralFeatureSet(sfsArgs);
 		}
-		/*
-		 * Slots
-		 */
-		
-		sfsArgs.add(maudeFact.getVariableSFS(obj));
-		res = maudeFact.createStructuralFeatureSet(sfsArgs);
 	}
 	
 	/**

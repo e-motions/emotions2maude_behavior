@@ -39,8 +39,9 @@ A NAC consists of:
         structural features depends on whether there is any slot or out link in the
         behavior object. If any or if not, we also add a variable of type
         `Set{@StructuralFeatureInstance}`  to match all the remaining structural features.
-        For the out links and slots, we use the Java class `ObjectStructFeatLHS`.
-        
+        For the out links and slots, we use the Java class `ObjectStructFeatLHS`. The interested
+        reader could go to the section dedicated to this matter.
+
     2. The *negative* equation with the following arguments (Java method `createOwiseEquation`):
       - A variable `OIDSET@:Set`.
       - A variable `OBJSET@:Set{@Object}`.
@@ -48,11 +49,14 @@ A NAC consists of:
       And `false` as result. This is the `owise` equation.
 
 ### Representing an e-Motions LHS object in Maude
-A Maude object is represented by the operator `<_:_|_> : Oid Cid StructuralFeatures -> Object`
+A Maude object is represented by the operator `<_:_|_> : Oid Cid StructuralFeatures -> Object`. The Java class `Object2RecTermLHS` is intended to generate this term.
+The Java class `Object2RecTermLHS` generates a Maude RecTerm with the object operator and with the variable for the Oid and the Cid as it is mentioned below. For the structural features, the Java class ``
 - **Oid**: For the `Oid` we create a variable to be matched with the object. Such variable
 has the same name as the behavior object has. As for the sort, we use the `OCL-Type`.
 - **Cid**: For the `Cid` we use a variable which is the class name in upper case and each package is appended using the `@` symbol. The sort of such variable is the Maude sort used for such class.
-- **StructuralFeatures**: The most complex part. We distinguish if StructuralFeatures are needed for such object or not. They are needed if output links or slots are present in the object.
+- **Structural Features**: The java class `ObjectStructFeatLHS` creates this term. We distinguish whether the
+object has structural features or not, meaning that it has out links and/or slots. If it has not, we only creates a output variable to be match with its structural features. Provided it has out links and/or slots, we proceed as the following:
+  - *Slots*: 
   - *Links*:
 
 
