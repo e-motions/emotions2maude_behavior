@@ -1,6 +1,7 @@
 package main.java.transformation.rules.smallrules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,13 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EReference;
 
+import Maude.RecTerm;
 import Maude.Term;
 import behavior.Link;
 import behavior.Pattern;
 import main.java.transformation.MyMaudeFactory;
+import main.java.transformation.common.MaudeIdentifiers;
+import main.java.transformation.utils.MaudeOperators;
 
 /**
  * This class is intended to generate the structural features of a behavior object given by the argument.
@@ -40,16 +44,8 @@ import main.java.transformation.MyMaudeFactory;
  *  }
  * </pre>
  * 
- * ## RefWithoutDuplicates helper
- * <pre>
- * helper def : RefWithoutDuplicates( inCollection : Sequence(Behavior!Link) ) : Sequence(Behavior!EReference) =
- *	inCollection -> iterate(e; outCollection : Sequence(Behavior!EReference) = Sequence{} |
- *		if outCollection ->one(i|i=e.ref) then outCollection
- *		else outCollection ->append(e.ref)
- *		endif);
- * </pre>
  * 
- * ##Â AllObjectReferences helper
+ * ## AllObjectReferences helper
  * <pre>
  * helper def : AllObjectReferences(r:Sequence(Behavior!EReference),op:Sequence(Behavior!EReference)) : Sequence(Behavior!EReference) =
  *	 r->union(op)->asSet()->asSequence();
@@ -83,13 +79,40 @@ public class ObjectStructFeatLHS extends Rule {
 			 * 
 			 */
 			Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
+			System.out.println("Object: " + obj);
+			System.out.println("References: " + references);
 			for (EReference ref : references.keySet()) {
 				// Links2RecTerm
-				
+				if (references.get(ref).size() == 1 && ref.getUpperBound() == -1 
+						&& ref.isUnique() && ref.isOrdered()) {
+					
+					/* Creating the structural feature */
+					RecTerm sf = maudeFact.createRecTerm(MaudeOperators.SF);
+					sf.getArgs().add(maudeFact.getConstant(MaudeIdentifiers.get(ref)));
+					
+					/* OrderedSet 
+					 * an example of the resulting Maude term is:
+					 *   OrderedSet{OtherTokens1:List{OCL-Exp} # sToken:OCL-Type # OtherTokens2:List{OCL-Exp}}
+					 */
+					RecTerm orderedSet = maudeFact.createRecTerm(MaudeOperators.COLL_ORDERED_SET);
+					
+					Maude.Variable targetId = maudeFact.getVariableOCLType(references.get(ref).get(0).getTarget().getId());
+					/* head of the list */
+					Maude.Variable headList = maudeFact.getVariableOrderedLists(ref.getName() + "@Head");
+					/* tail of the list */
+					Maude.Variable tailList = maudeFact.getVariableOrderedLists(ref.getName() + "@Tail");
+					
+					orderedSet.getArgs().addAll(Arrays.asList(headList, targetId, tailList));
+					
+					sf.getArgs().add(orderedSet);
+					
+					sfsArgs.add(sf);
+				}
 			}
 			/*
 			 * Slots
 			 */
+			
 			
 			sfsArgs.add(maudeFact.getVariableSFS(obj));
 			res = maudeFact.createStructuralFeatureSet(sfsArgs);

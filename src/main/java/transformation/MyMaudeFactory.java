@@ -9,6 +9,7 @@ import Maude.RecTerm;
 import Maude.Sort;
 import Maude.Term;
 import Maude.Variable;
+import main.java.exceptions.NotValidArgumentsE2MException;
 import main.java.transformation.common.MaudeIdentifiers;
 import main.java.transformation.utils.MaudeOperators;
 
@@ -132,6 +133,9 @@ public class MyMaudeFactory {
 	 * @return the RecTerm
 	 */
 	public RecTerm createStructuralFeature(List<Term> args) {
+		if (args.size() != 2) {
+			throw new NotValidArgumentsE2MException("It must have exactly 2 arguments.");
+		}
 		RecTerm res = createRecTerm(MaudeOperators.SF);
 		res.getArgs().addAll(args);
 		return res;
@@ -188,7 +192,7 @@ public class MyMaudeFactory {
 	 */
 	public Variable getVariableSFS(behavior.Object obj) {
 		Variable res = factory.createVariable();
-		res.setName(MaudeIdentifiers.sfs(obj));
+		res.setName(MaudeIdentifiers.sfsVariableName(obj));
 		res.setType(emotionsModule.getSort("Set{@StructuralFeatureInstance}"));
 		return res;
 	}
