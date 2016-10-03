@@ -152,4 +152,15 @@
       </els>
     </patterns>
   </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestSlots" lhs="//@rules.7/@patterns.0" rhs="//@rules.7/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a1">
+        <sfs oclValue="7">
+          <sf href="My.ecore#//A/aInt"/>
+        </sfs>
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns name="RHS"/>
+  </rules>
 </behavior:Behavior>

@@ -57,11 +57,13 @@ has the same name as the behavior object has. As for the sort, we use the `OCL-T
 - **Cid**: For the `Cid` we use a variable which is the class name in upper case and each package is appended using the `@` symbol. The sort of such variable is the Maude sort used for such class.
 - **Structural Features**: The java class `ObjectStructFeatLHS` creates this term. We distinguish whether the
 object has structural features or not, meaning that it has out links and/or slots. If it has not, we only creates a output variable to be match with its structural features. Provided it has out links and/or slots, we proceed as the following:
-  - *Slots*:
+  - *Slots*: It has been done with a variable. As it has been done in the ATL transformation.
   - *Links*: Much casuistry could appear in the creation of those structural features which are links. here we itemize all those cases:
     - *Only one link whose reference is a OrderedSet without `pos` attribute*: it can be specified in the matching of the rule.
     - *Only one link whose reference is a Sequence without `pos` attribute*: it can be specified in the matching of the rule.
-    - *One or more links whose reference is a Set*: If `pos` has been set, an exception is thrown.
+    - *One or more links whose reference is a Set*: If `pos` has been set, an exception is thrown. It can be specified using the matching engine.
+    - *One or more links whose reference is a Bag*: If `pos` has been set, an exception is thrown. It is specified using the matching.
+    - *Others*: A variable is created and afterwards it will be checked using mOdCL.
 
 
 

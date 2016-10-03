@@ -76,7 +76,18 @@
       <styles xmi:type="notation:ShapeStyle" xmi:id="_gjq8MYldEeaPBdGASCoDOg" fontName="Segoe UI"/>
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_gjq8MoldEeaPBdGASCoDOg" diagramLink="_hSSVsIldEeaPBdGASCoDOg" hint="Rule"/>
       <element xmi:type="behavior:AtomicRule" href="test.behavior#TestSequence2"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gjq8M4ldEeaPBdGASCoDOg" x="202" y="197"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gjq8M4ldEeaPBdGASCoDOg" x="105" y="150"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_8smeUIl0EeaPBdGASCoDOg" type="2004">
+      <children xmi:type="notation:Node" xmi:id="_8snFYIl0EeaPBdGASCoDOg" type="5012"/>
+      <children xmi:type="notation:Node" xmi:id="_8snFYYl0EeaPBdGASCoDOg" type="5013"/>
+      <children xmi:type="notation:Node" xmi:id="_8snFYol0EeaPBdGASCoDOg" type="5014"/>
+      <children xmi:type="notation:Node" xmi:id="_8snFY4l0EeaPBdGASCoDOg" type="5015"/>
+      <children xmi:type="notation:Node" xmi:id="_8snFZIl0EeaPBdGASCoDOg" type="5016"/>
+      <styles xmi:type="notation:ShapeStyle" xmi:id="_8smeUYl0EeaPBdGASCoDOg" fontName="Segoe UI"/>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_8smeUol0EeaPBdGASCoDOg" diagramLink="_9Lpx0Il0EeaPBdGASCoDOg" hint="Rule"/>
+      <element xmi:type="behavior:AtomicRule" href="test.behavior#TestSlots"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8smeU4l0EeaPBdGASCoDOg" x="105" y="200"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_xaqaYYlQEeaPBdGASCoDOg"/>
     <element xmi:type="behavior:Behavior" href="test.behavior#/"/>
@@ -513,5 +524,80 @@
       <element xmi:type="behavior:Link" href="test.behavior#//@rules.6/@patterns.0/@els.4"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_mD7fwoldEeaPBdGASCoDOg" points="[25, 18, -101, -74]$[124, 54, -2, -38]"/>
     </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_LzZbIIlxEeaPBdGASCoDOg" type="Rule" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_L1zO4IlxEeaPBdGASCoDOg" type="2005">
+      <children xmi:type="notation:DecorationNode" xmi:id="_L1zO5YlxEeaPBdGASCoDOg" type="5050"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_L1zO5olxEeaPBdGASCoDOg" type="7008">
+        <children xmi:type="notation:Shape" xmi:id="_MKDAkIlxEeaPBdGASCoDOg" type="3005" fontName="Segoe UI">
+          <children xmi:type="notation:DecorationNode" xmi:id="_MKDAkolxEeaPBdGASCoDOg" type="5013"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_MKDAk4lxEeaPBdGASCoDOg" type="5014"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_MKDAlIlxEeaPBdGASCoDOg" type="5015"/>
+          <children xmi:type="notation:BasicCompartment" xmi:id="_MKDnoIlxEeaPBdGASCoDOg" type="7003">
+            <children xmi:type="notation:Shape" xmi:id="_NI4nYIlxEeaPBdGASCoDOg" type="3006" fontName="Segoe UI">
+              <children xmi:type="notation:DecorationNode" xmi:id="_NI4nYolxEeaPBdGASCoDOg" type="5010"/>
+              <children xmi:type="notation:DecorationNode" xmi:id="_NI4nY4lxEeaPBdGASCoDOg" type="5011"/>
+              <children xmi:type="notation:DecorationNode" xmi:id="_NI4nZIlxEeaPBdGASCoDOg" type="5012"/>
+              <element xmi:type="behavior:Slot" href="test.behavior#//@rules.7/@patterns.0/@els.0/@sfs.0"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NI4nYYlxEeaPBdGASCoDOg"/>
+            </children>
+            <styles xmi:type="notation:SortingStyle" xmi:id="_MKDnoYlxEeaPBdGASCoDOg"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_MKDnoolxEeaPBdGASCoDOg"/>
+          </children>
+          <element xmi:type="behavior:Object" href="test.behavior#//@rules.7/@patterns.0/@els.0"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MKDAkYlxEeaPBdGASCoDOg" x="35" y="31"/>
+        </children>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_L1zO4YlxEeaPBdGASCoDOg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_L1zO4olxEeaPBdGASCoDOg" fontName="Segoe UI"/>
+      <styles xmi:type="notation:FillStyle" xmi:id="_L1zO44lxEeaPBdGASCoDOg"/>
+      <element xmi:type="behavior:Pattern" href="test.behavior#//@rules.7/@patterns.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L1zO5IlxEeaPBdGASCoDOg"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_L1zO54lxEeaPBdGASCoDOg" type="2005">
+      <children xmi:type="notation:DecorationNode" xmi:id="_L1zO7IlxEeaPBdGASCoDOg" type="5050"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_L1zO7YlxEeaPBdGASCoDOg" type="7008"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_L1zO6IlxEeaPBdGASCoDOg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_L1zO6YlxEeaPBdGASCoDOg" fontName="Segoe UI"/>
+      <styles xmi:type="notation:FillStyle" xmi:id="_L1zO6olxEeaPBdGASCoDOg"/>
+      <element xmi:type="behavior:Pattern" href="test.behavior#//@rules.7/@patterns.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L1zO64lxEeaPBdGASCoDOg" x="360"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_LzZbIYlxEeaPBdGASCoDOg"/>
+    <element xmi:type="behavior:AtomicRule" href="test.behavior#TestSlots"/>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_9Lpx0Il0EeaPBdGASCoDOg" type="Rule" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_9OAiQIl0EeaPBdGASCoDOg" type="2005">
+      <children xmi:type="notation:DecorationNode" xmi:id="_9OBJUIl0EeaPBdGASCoDOg" type="5050"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_9OBJUYl0EeaPBdGASCoDOg" type="7008">
+        <children xmi:type="notation:Shape" xmi:id="_9OCXcIl0EeaPBdGASCoDOg" type="3005" fontName="Segoe UI">
+          <children xmi:type="notation:DecorationNode" xmi:id="_9OCXcol0EeaPBdGASCoDOg" type="5013"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_9OCXc4l0EeaPBdGASCoDOg" type="5014"/>
+          <children xmi:type="notation:DecorationNode" xmi:id="_9OCXdIl0EeaPBdGASCoDOg" type="5015"/>
+          <children xmi:type="notation:BasicCompartment" xmi:id="_9OCXdYl0EeaPBdGASCoDOg" type="7003">
+            <styles xmi:type="notation:SortingStyle" xmi:id="_9OCXdol0EeaPBdGASCoDOg"/>
+            <styles xmi:type="notation:FilteringStyle" xmi:id="_9OCXd4l0EeaPBdGASCoDOg"/>
+          </children>
+          <element xmi:type="behavior:Object" href="test.behavior#//@rules.7/@patterns.0/@els.0"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9OCXcYl0EeaPBdGASCoDOg" x="45" y="26"/>
+        </children>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_9OAiQYl0EeaPBdGASCoDOg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_9OAiQol0EeaPBdGASCoDOg" fontName="Segoe UI"/>
+      <styles xmi:type="notation:FillStyle" xmi:id="_9OAiQ4l0EeaPBdGASCoDOg"/>
+      <element xmi:type="behavior:Pattern" href="test.behavior#//@rules.7/@patterns.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9OAiRIl0EeaPBdGASCoDOg"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_9OBJUol0EeaPBdGASCoDOg" type="2005">
+      <children xmi:type="notation:DecorationNode" xmi:id="_9OBJV4l0EeaPBdGASCoDOg" type="5050"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_9OBJWIl0EeaPBdGASCoDOg" type="7008"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_9OBJU4l0EeaPBdGASCoDOg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_9OBJVIl0EeaPBdGASCoDOg" fontName="Segoe UI"/>
+      <styles xmi:type="notation:FillStyle" xmi:id="_9OBJVYl0EeaPBdGASCoDOg"/>
+      <element xmi:type="behavior:Pattern" href="test.behavior#//@rules.7/@patterns.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9OBJVol0EeaPBdGASCoDOg" x="360"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_9Lpx0Yl0EeaPBdGASCoDOg"/>
+    <element xmi:type="behavior:AtomicRule" href="test.behavior#TestSlots"/>
   </notation:Diagram>
 </xmi:XMI>

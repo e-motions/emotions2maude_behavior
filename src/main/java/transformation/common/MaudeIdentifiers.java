@@ -1,11 +1,13 @@
 package main.java.transformation.common;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-import Maude.Variable;
 import behavior.Object;
+import behavior.Slot;
 import gcs.ClassGD;
 
 public final class MaudeIdentifiers {
@@ -108,8 +110,8 @@ public final class MaudeIdentifiers {
 	 * @param ref
 	 * @return
 	 */
-	public static String get(EReference ref) {
-		return ref.getName() + "@" + get(ref.getEContainingClass());
+	public static String get(EStructuralFeature sf) {
+		return sf.getName() + "@" + get(sf.getEContainingClass());
 	}
 	
 	/**
@@ -143,4 +145,11 @@ public final class MaudeIdentifiers {
 	public static String getRefIdentifier(Object obj, EReference ref) {
 		return ref.getName().toUpperCase() + "@" + obj.getId() + "@ATT";
 	}
+
+	public static String getVariable(Slot slot) {
+		/* slot.sf.name.toUpper().processSpecOpChars() + '@' + slot.object.id + '@ATT' */
+		return ((EAttribute) slot.getSf()).getName().toUpperCase() + "@" + slot.getObject().getId() + "@ATT";
+	}
+
+	
 }

@@ -7,11 +7,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EReference;
 
 import Maude.RecTerm;
 import Maude.Term;
 import behavior.Link;
+import behavior.Slot;
+import main.java.exceptions.EmotionsNotCompletedModel;
 import main.java.exceptions.PosNotValid;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
@@ -64,6 +67,28 @@ import main.java.transformation.utils.MaudeOperators;
  *				type <- thisModule.oclTypeSort --thisModule.collectionSort  
  *				)
  *	}
+ * </pre>
+ * 
+ * The rule `Slots2RecTerm` here coded is:
+ * <pre>
+ * lazy rule Slots2RecTerm{
+ *	from
+ *		slot : Behavior!Slot
+ *	to
+ *		stft : Maude!RecTerm(
+ *			op <- thisModule.sfsOperator, -- '_:_'
+ *			type <- slot.sf.TypeOfInstance(),
+ *			args <- Sequence{constIzq,constDer}
+ *			),
+ *		constIzq : Maude!Constant(
+ *			op <-  slot.sf.maudeName().processSpecOpChars(),--slot.sf.name,
+ *			type <- slot.sf.slotType()			
+ *			),
+ *		constDer : Maude!Variable(
+ *			name <- slot.sf.name.toUpper().processSpecOpChars() + '@' + slot.object.id + '@ATT',
+ *			type <- thisModule.oclTypeSort--slot.sf.structFeatType() 
+ *		)
+ * }
  * </pre>
  * 
  * 
@@ -196,10 +221,23 @@ public class ObjectStructFeatLHS extends Rule {
 				}
 				sfsArgs.add(sf);
 			}			
+			
 			/*
 			 * Slots
+			 * 
+			 * This rule is equal to the one in ATL `Slots2RecTerm`.
 			 */
-			
+			for (Slot slot : obj.getSfs()) {
+				RecTerm sf = maudeFact.createRecTerm(MaudeOperators.SF);
+				EAttribute attribute = (EAttribute) slot.getSf();
+				if (attribute == null) 
+					throw new EmotionsNotCompletedModel("Rule: " + obj.getPattern().getRule().getName() 
+							+ ". Pattern: " + obj.getPattern().getName() + ". Object: " + obj.getId() 
+							+ ". Structural Feature not set.");
+				sf.getArgs().add(maudeFact.getConstant(MaudeIdentifiers.get((EAttribute) slot.getSf())));
+				sf.getArgs().add(maudeFact.getVariableOCLType(MaudeIdentifiers.getVariable(slot)));
+				sfsArgs.add(sf);
+			}
 			
 			
 			sfsArgs.add(maudeFact.getVariableSFS(obj));

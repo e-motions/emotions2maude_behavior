@@ -51,7 +51,22 @@ public class ObjectStructFeatLHSTest extends ParentTest {
 	
 	@Test
 	public void onlyOneSlot() {
-		fail("not implemented yet");
+		/* querying model `Sequence`, rule `TestSlots`, pattern `LHS`, object `a1` */
+		Pattern lhsPattern = sequence.getBehavior().getRules().stream()
+				.filter(el -> el instanceof Rule && el.getName().equals("TestSlots")).findFirst().get().getLhs();
+		Optional<behavior.Object> obj = lhsPattern.getEls().stream()
+				.filter(ob -> ob instanceof behavior.Object && ((behavior.Object) ob).getId().equals("a1"))
+				.map(ob -> (behavior.Object) ob).findAny();
+		if (obj.isPresent()) {
+			Term res = new ObjectStructFeatLHS(maudeFact, obj.get()).get();
+			assertTrue(res instanceof RecTerm);
+			assertEquals(((RecTerm) res).getOp(), MaudeOperators.SFS_SET);
+			assertEquals(((RecTerm) res).getArgs().size(), 2);
+			RecTerm slotSF = (RecTerm) ((RecTerm) res).getArgs().get(0);
+			assertEquals(slotSF.getOp(), MaudeOperators.SF);
+		} else {
+			fail("Object not found.");
+		}
 	}
 	
 	@Test
