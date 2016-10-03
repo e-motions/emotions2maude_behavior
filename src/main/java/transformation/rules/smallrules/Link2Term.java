@@ -100,7 +100,7 @@ public class Link2Term extends Rule {
 				for (Link l : links) {
 					content.getArgs().add(maudeFact.getVariableOCLType(l.getTarget().getId()));
 				}
-				content.getArgs().add(maudeFact.getVariableMSet(objOid + "MList"));
+				content.getArgs().add(maudeFact.getVariableNotOrderedLists(objOid + "MList"));
 				((RecTerm) consequent).getArgs().add(content);
 			} else {
 				/* it should be done as in the legacy transformation */

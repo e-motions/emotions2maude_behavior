@@ -4,6 +4,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import Maude.Variable;
+import behavior.Object;
 import gcs.ClassGD;
 
 public final class MaudeIdentifiers {
@@ -129,5 +131,16 @@ public final class MaudeIdentifiers {
 			res += "@" + get(_class.getEPackage());
 		} 
 		return res;
+	}
+	
+	/**
+	 * Should generate a variable identifier for a reference which cannot be set in the matching.
+	 * The original code is: <code>linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT'</code>
+	 * @param obj source of the link
+	 * @param ref name of the reference
+	 * @return the identifier
+	 */
+	public static String getRefIdentifier(Object obj, EReference ref) {
+		return ref.getName().toUpperCase() + "@" + obj.getId() + "@ATT";
 	}
 }

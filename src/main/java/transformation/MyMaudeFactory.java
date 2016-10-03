@@ -228,7 +228,7 @@ public class MyMaudeFactory {
 	 * @param id of the variable
 	 * @return the Maude variable
 	 */
-	public Variable getVariableMSet(String id) {
+	public Variable getVariableNotOrderedLists(String id) {
 		Variable res = factory.createVariable();
 		res.setName(id);
 		res.setType(emotionsModule.getSort("MSet{OCL-Exp}"));

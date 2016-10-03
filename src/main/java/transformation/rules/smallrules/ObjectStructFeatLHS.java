@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EReference;
 import Maude.RecTerm;
 import Maude.Term;
 import behavior.Link;
-import behavior.Pattern;
 import main.java.exceptions.PosNotValid;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
@@ -44,6 +43,29 @@ import main.java.transformation.utils.MaudeOperators;
  *  }
  * </pre>
  * 
+ *  Link2Term rule
+ *<pre>
+ *	 lazy rule Links2RecTerm{
+ *		from		
+ *			linkRef : Behavior!EReference,
+ *			objId : String
+ *		to
+ *			ref : Maude!RecTerm(
+ *				op <- thisModule.sfsOperator, -- '_:_'
+ *				type <- thisModule.sortRefInst,
+ *				args <- Sequence{constSF,varSF}
+ *				),
+ *			constSF : Maude!Constant(
+ *				op <-  linkRef.maudeName().processSpecOpChars(),
+ *				type <- thisModule.sortRefSimple		
+ *				),
+ *			varSF : Maude!Variable(
+ *				name <- linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT', --link.target.id, --.toUpper() + '@' + link.src.id + '@ATT' ,
+ *				type <- thisModule.oclTypeSort --thisModule.collectionSort  
+ *				)
+ *	}
+ * </pre>
+ * 
  * 
  * ## AllObjectReferences helper
  * <pre>
@@ -60,12 +82,10 @@ import main.java.transformation.utils.MaudeOperators;
 public class ObjectStructFeatLHS extends Rule {
 
 	private behavior.Object obj;
-	private Pattern pattern;
 	
-	public ObjectStructFeatLHS(MyMaudeFactory maudeFact, behavior.Object obj, Pattern pattern) {
+	public ObjectStructFeatLHS(MyMaudeFactory maudeFact, behavior.Object obj) {
 		super(maudeFact);
 		this.obj = obj;
-		this.pattern = pattern;
 	}
 
 	@Override
@@ -132,18 +152,54 @@ public class ObjectStructFeatLHS extends Rule {
 				} else if (!ref.isOrdered() && ref.isUnique()) {
 					/*
 					 * Set
+					 * 
+					 * an example of the resulting Maude term is:
+					 * 	Set{ lin1:OCL-Type ; link2:OCL-Type ; remainings:MSet{OCL-Exp}}
+					 * 
 					 */
-					if(references.get(ref).stream().anyMatch(l -> !l.getPos().equals(""))) {
+					if(references.get(ref).stream().anyMatch(l -> !posNotSet(l))) {
 						throw new PosNotValid("Link whose reference is " + ref.getName() 
 							+ " cannot have pos. In rule " + obj.getPattern().getRule().getName() + ".");
 					}
+					RecTerm set = maudeFact.createRecTerm(MaudeOperators.COLL_SET);
+					RecTerm mset = maudeFact.createRecTerm(MaudeOperators.NOT_ORDERED_LIST_SEPARATOR);
+					for (Link l : references.get(ref)) {
+						mset.getArgs().add(maudeFact.getVariableOCLType(l.getTarget().getId()));
+					}
+					mset.getArgs().add(maudeFact.getVariableNotOrderedLists(ref.getName() + "@Remainings"));
+					set.getArgs().add(mset);
+					sf.getArgs().add(set);
+				} else if (!ref.isOrdered() && !ref.isUnique()) {
+					/*
+					 * 
+					 * Bag
+					 * 
+					 * an example of the resulting Maude term is:
+					 *  Bag{ lin1:OCL-Type ; link2:OCL-Type ; remainings:MSet{OCL-Exp}}
+					 */
+					if(references.get(ref).stream().anyMatch(l -> !posNotSet(l))) {
+						throw new PosNotValid("Link whose reference is " + ref.getName() 
+							+ " cannot have pos. In rule " + obj.getPattern().getRule().getName() + ".");
+					}
+					RecTerm bag = maudeFact.createRecTerm(MaudeOperators.COLL_BAG);
+					RecTerm mset = maudeFact.createRecTerm(MaudeOperators.NOT_ORDERED_LIST_SEPARATOR);
+					for (Link l : references.get(ref)) {
+						mset.getArgs().add(maudeFact.getVariableOCLType(l.getTarget().getId()));
+					}
+					mset.getArgs().add(maudeFact.getVariableNotOrderedLists(ref.getName() + "@Remainings"));
+					bag.getArgs().add(mset);
+					sf.getArgs().add(bag);
+				} else {
+					/* The identifier is: linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT' */
+					Maude.Variable reference = maudeFact.getVariableOCLType(MaudeIdentifiers.getRefIdentifier(obj, ref));
+					sf.getArgs().add(reference);
 				}
 				sfsArgs.add(sf);
-			}
-			
+			}			
 			/*
 			 * Slots
 			 */
+			
 			
 			
 			sfsArgs.add(maudeFact.getVariableSFS(obj));

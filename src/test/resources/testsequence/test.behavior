@@ -38,4 +38,118 @@
       </els>
     </patterns>
   </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestingSet1" lhs="//@rules.2/@patterns.0" rhs="//@rules.2/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a" outLinks="//@rules.2/@patterns.0/@els.2">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b1" inLinks="//@rules.2/@patterns.0/@els.2">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.2/@patterns.0/@els.0" target="//@rules.2/@patterns.0/@els.1">
+        <ref href="My.ecore#//A/set"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestingSet2" lhs="//@rules.3/@patterns.0" rhs="//@rules.3/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a" outLinks="//@rules.3/@patterns.0/@els.4 //@rules.3/@patterns.0/@els.5 //@rules.3/@patterns.0/@els.6">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b1" inLinks="//@rules.3/@patterns.0/@els.4">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b2" inLinks="//@rules.3/@patterns.0/@els.5">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b3" inLinks="//@rules.3/@patterns.0/@els.6">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.3/@patterns.0/@els.0" target="//@rules.3/@patterns.0/@els.1">
+        <ref href="My.ecore#//A/set"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.3/@patterns.0/@els.0" target="//@rules.3/@patterns.0/@els.2">
+        <ref href="My.ecore#//A/set"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.3/@patterns.0/@els.0" target="//@rules.3/@patterns.0/@els.3">
+        <ref href="My.ecore#//A/set"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestingBag1" lhs="//@rules.4/@patterns.0" rhs="//@rules.4/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a" outLinks="//@rules.4/@patterns.0/@els.2">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b" inLinks="//@rules.4/@patterns.0/@els.2">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.4/@patterns.0/@els.0" target="//@rules.4/@patterns.0/@els.1">
+        <ref href="My.ecore#//A/bag"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestingBag2" lhs="//@rules.5/@patterns.0" rhs="//@rules.5/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a" outLinks="//@rules.5/@patterns.0/@els.3 //@rules.5/@patterns.0/@els.4">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b1" inLinks="//@rules.5/@patterns.0/@els.3">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b2" inLinks="//@rules.5/@patterns.0/@els.4">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.5/@patterns.0/@els.0" target="//@rules.5/@patterns.0/@els.1">
+        <ref href="My.ecore#//A/bag"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.5/@patterns.0/@els.0" target="//@rules.5/@patterns.0/@els.2">
+        <ref href="My.ecore#//A/bag"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule" name="TestSequence2" lhs="//@rules.6/@patterns.0" rhs="//@rules.6/@patterns.1" maxDuration="0">
+    <patterns name="LHS">
+      <els xsi:type="behavior:Object" id="a" outLinks="//@rules.6/@patterns.0/@els.3 //@rules.6/@patterns.0/@els.4">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b1" inLinks="//@rules.6/@patterns.0/@els.3">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object" id="b2" inLinks="//@rules.6/@patterns.0/@els.4">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.6/@patterns.0/@els.0" target="//@rules.6/@patterns.0/@els.1">
+        <ref href="My.ecore#//A/sequence"/>
+      </els>
+      <els xsi:type="behavior:Link" src="//@rules.6/@patterns.0/@els.0" target="//@rules.6/@patterns.0/@els.2">
+        <ref href="My.ecore#//A/sequence"/>
+      </els>
+    </patterns>
+    <patterns name="RHS">
+      <els xsi:type="behavior:Object" id="a">
+        <classGD href="test.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
 </behavior:Behavior>
