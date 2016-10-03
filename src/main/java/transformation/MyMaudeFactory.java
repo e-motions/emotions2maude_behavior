@@ -1,5 +1,6 @@
 package main.java.transformation;
 
+import java.util.Arrays;
 import java.util.List;
 
 import Maude.Constant;
@@ -112,6 +113,17 @@ public class MyMaudeFactory {
 	public Constant getConstant(String string) {
 		Constant res = factory.createConstant();
 		res.setOp(string);
+		return res;
+	}
+	
+	/**
+	 * It produces a RecTerm with the operator ordered list and with
+	 * an indeterminate number or arguments
+	 */
+	public RecTerm createOrderedList(Term... terms) {
+		RecTerm res = factory.createRecTerm();
+		res.setOp(MaudeOperators.ORDERED_LIST_SEPARATOR);
+		res.getArgs().addAll(Arrays.asList(terms));
 		return res;
 	}
 	

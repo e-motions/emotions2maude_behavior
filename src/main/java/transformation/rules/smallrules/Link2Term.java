@@ -82,7 +82,7 @@ public class Link2Term extends Rule {
 				Maude.Variable endList = maudeFact.getVariableOrderedLists(objOid + "List2");
 				Maude.Variable targetId = maudeFact.getVariableOCLType(links.get(0).getTarget().getId());
 				
-				RecTerm content = maudeFact.createRecTerm(MaudeOperators.ORDERED_LIST);
+				RecTerm content = maudeFact.createRecTerm(MaudeOperators.ORDERED_LIST_SEPARATOR);
 				content.getArgs().addAll(Arrays.asList(initList, targetId, endList));
 				
 				((RecTerm) consequent).getArgs().add(content);
@@ -96,7 +96,7 @@ public class Link2Term extends Rule {
 					consequent = maudeFact.createRecTerm(MaudeOperators.COLL_SET);
 				}
 				
-				RecTerm content = maudeFact.createRecTerm(MaudeOperators.NOT_ORDERED_LIST);
+				RecTerm content = maudeFact.createRecTerm(MaudeOperators.NOT_ORDERED_LIST_SEPARATOR);
 				for (Link l : links) {
 					content.getArgs().add(maudeFact.getVariableOCLType(l.getTarget().getId()));
 				}

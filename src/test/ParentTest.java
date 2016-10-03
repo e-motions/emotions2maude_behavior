@@ -12,6 +12,7 @@ public class ParentTest {
 	
 	public static Emotions2Maude trajectory;
 	public static Emotions2Maude mpn;
+	public static Emotions2Maude sequence;
 	
 	protected static EmotionsModule emotionsMod;
 	protected static MyMaudeFactory maudeFact;
@@ -42,6 +43,12 @@ public class ParentTest {
 		mpn = new Emotions2Maude(new File(BEH_MPN), new File(GCS_MPN), new File(MAUDE_MPN));
 		mpn.init();
 		
+		/* testsequence */
+		String BEH_SEQ = "src/test/resources/testsequence/test.behavior";
+		String GCS_SEQ = "src/test/resources/testsequence/test.gcs";
+		String MAUDE_SEQ = "src/test/resources/testsequence/outs/out_sequence.xmi";
+		sequence = new Emotions2Maude(new File(BEH_SEQ), new File(GCS_SEQ), new File(MAUDE_SEQ));
+		sequence.init();
 	}
 
 }

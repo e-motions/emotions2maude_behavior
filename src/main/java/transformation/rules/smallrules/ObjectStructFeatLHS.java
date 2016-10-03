@@ -1,7 +1,6 @@
 package main.java.transformation.rules.smallrules;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import Maude.RecTerm;
 import Maude.Term;
 import behavior.Link;
 import behavior.Pattern;
+import main.java.exceptions.PosNotValid;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
 import main.java.transformation.utils.MaudeOperators;
@@ -74,23 +74,25 @@ public class ObjectStructFeatLHS extends Rule {
 			res = maudeFact.getVariableSFS(obj);
 		} else {
 			List<Term> sfsArgs = new ArrayList<>();
+			
 			/* 
 			 * Links to references 
 			 * 
 			 */
 			Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
-			System.out.println("Object: " + obj);
-			System.out.println("References: " + references);
 			for (EReference ref : references.keySet()) {
 				// Links2RecTerm
-				if (references.get(ref).size() == 1 && ref.getUpperBound() == -1 
+				
+				/* Creating the structural feature */
+				RecTerm sf = maudeFact.createRecTerm(MaudeOperators.SF);
+				sf.getArgs().add(maudeFact.getConstant(MaudeIdentifiers.get(ref)));
+				
+				if (references.get(ref).size() == 1 && posNotSet(references.get(ref).get(0))
+						&& ref.getUpperBound() == -1 
 						&& ref.isUnique() && ref.isOrdered()) {
-					
-					/* Creating the structural feature */
-					RecTerm sf = maudeFact.createRecTerm(MaudeOperators.SF);
-					sf.getArgs().add(maudeFact.getConstant(MaudeIdentifiers.get(ref)));
-					
-					/* OrderedSet 
+					/*
+					 * OrderedSet
+					 *
 					 * an example of the resulting Maude term is:
 					 *   OrderedSet{OtherTokens1:List{OCL-Exp} # sToken:OCL-Type # OtherTokens2:List{OCL-Exp}}
 					 */
@@ -102,13 +104,43 @@ public class ObjectStructFeatLHS extends Rule {
 					/* tail of the list */
 					Maude.Variable tailList = maudeFact.getVariableOrderedLists(ref.getName() + "@Tail");
 					
-					orderedSet.getArgs().addAll(Arrays.asList(headList, targetId, tailList));
+					orderedSet.getArgs().add(maudeFact.createOrderedList(headList, targetId, tailList));
 					
 					sf.getArgs().add(orderedSet);
 					
-					sfsArgs.add(sf);
+					
+				} else if (references.get(ref).size() == 1  && posNotSet(references.get(ref).get(0))
+						&& ref.getUpperBound() == -1
+						&& !ref.isUnique() && ref.isOrdered()) {
+					/*
+					 * Sequence
+					 *
+					 * an example of the resulting Maude term is:
+					 *   Sequence{OtherTokens1:List{OCL-Exp} # sToken:OCL-Type # OtherTokens2:List{OCL-Exp}}
+					 */
+					RecTerm sequence = maudeFact.createRecTerm(MaudeOperators.COLL_SEQUENCE);
+					
+					Maude.Variable targetId = maudeFact.getVariableOCLType(references.get(ref).get(0).getTarget().getId());
+					/* head of the list */
+					Maude.Variable headList = maudeFact.getVariableOrderedLists(ref.getName() + "@Head");
+					/* tail of the list */
+					Maude.Variable tailList = maudeFact.getVariableOrderedLists(ref.getName() + "@Tail");
+					
+					sequence.getArgs().add(maudeFact.createOrderedList(headList, targetId, tailList));
+					
+					sf.getArgs().add(sequence);
+				} else if (!ref.isOrdered() && ref.isUnique()) {
+					/*
+					 * Set
+					 */
+					if(references.get(ref).stream().anyMatch(l -> !l.getPos().equals(""))) {
+						throw new PosNotValid("Link whose reference is " + ref.getName() 
+							+ " cannot have pos. In rule " + obj.getPattern().getRule().getName() + ".");
+					}
 				}
+				sfsArgs.add(sf);
 			}
+			
 			/*
 			 * Slots
 			 */
@@ -119,6 +151,10 @@ public class ObjectStructFeatLHS extends Rule {
 		}
 	}
 	
+	private boolean posNotSet(Link link) {
+		return link.getPos() == null || link.getPos().equals("");
+	}
+
 	/**
 	 * Given a list of behavior links, it returns a Map association EReferences to Links.
 	 * 
