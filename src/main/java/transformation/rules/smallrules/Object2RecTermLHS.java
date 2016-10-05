@@ -1,13 +1,8 @@
 package main.java.transformation.rules.smallrules;
 
-import org.eclipse.emf.ecore.EClass;
-
-import Maude.RecTerm;
 import Maude.Term;
 import behavior.Pattern;
-import gcs.ClassGD;
 import main.java.transformation.MyMaudeFactory;
-import main.java.transformation.common.MaudeIdentifiers;
 
 /**
  * This class transforms a Behavior!Object into a Maude object. Since objects ar different depending on where they are,
@@ -21,8 +16,6 @@ public class Object2RecTermLHS extends Rule {
 	
 	private behavior.Object behObj;
 	private Pattern behPattern;
-	
-	private RecTerm maudeObject;
 	
 	/**
 	 * lazy rule Object2RecTerm{
@@ -95,11 +88,12 @@ public class Object2RecTermLHS extends Rule {
 		/* TODO: opposite links */
 		if (!behObj.getOutLinks().isEmpty() || !behObj.getSfs().isEmpty()) {
 			/* thisModule.ObjectArgmsLHS(p,obj,sfeat) */
-			
+			structuralFeatures = new ObjectStructFeatLHS(maudeFact, behObj).get();
 		} else {
 			structuralFeatures = maudeFact.getVariableSFS(behObj);
 		}
 		
+		res = maudeFact.createObject(id, objClass, structuralFeatures);
 	}
 
 }

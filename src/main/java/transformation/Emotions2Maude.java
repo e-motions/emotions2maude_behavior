@@ -70,7 +70,7 @@ public class Emotions2Maude {
 				/* TODO: maybe this if statement should be modified */
  				if(atomic.getPeriodicity() == 0.0) {
  					/* periodic */
- 					if(Double.valueOf(atomic.getMaxDuration()) == 0.0) {
+ 					if(atomic.getMaxDuration().equals("") || atomic.getMaxDuration().equals("0")) {
  						/* instantaneous */
  						smod.getEls().addAll(new AtomicRuleInstantaneousNotPeriodic(maudeFact, atomic).get());
  					}
@@ -101,9 +101,7 @@ public class Emotions2Maude {
 		/**
 		 *  Fixed importations 
 		 */
-		/* Import e-Motions module */
-		/* Create module and include it in the MaudeSpec */
-		mSpec.getEls().add(emotionsMod.getModule());
+		modelManager.getMaudeModel().getContents().add(emotionsMod.getModule());
 		
 		ModImportation emotionsImportation = factory.createModImportation();
 		ModuleIdModExp emotionsModExp = factory.createModuleIdModExp();
@@ -114,7 +112,7 @@ public class Emotions2Maude {
 		/* Create module and include it in the MaudeSpec */
 		SModule timeModule = factory.createSModule();
 		timeModule.setName(beh.isDenseTime()? "DENSE_TIME" : "DISCRETE_TIME");
-		mSpec.getEls().add(timeModule);
+		modelManager.getMaudeModel().getContents().add(timeModule);
 		
 		ModImportation timeImportation = factory.createModImportation();
 		ModuleIdModExp timeModExp = factory.createModuleIdModExp();
@@ -145,7 +143,7 @@ public class Emotions2Maude {
 		/* Create the system module if it does not exist */
 		SModule mmModule = factory.createSModule();
 		mmModule.setName(mmGD.getName());
-		mSpec.getEls().add(mmModule);
+		modelManager.getMaudeModel().getContents().add(mmModule);
 		
 		ModImportation mmImportation = factory.createModImportation();
 		ModuleIdModExp mmModExp = factory.createModuleIdModExp();

@@ -79,6 +79,8 @@ object has structural features or not, meaning that it has out links and/or slot
 1. Why is needed to have into account the opposite links? maybe the readjust to set
 them up to null if deleted?
 
+2. Conditional NACs
+
 ### little to-dos
 - do not have singleton instances, they depend on the transformations.
 - change get by create in MyMaudeFactory.

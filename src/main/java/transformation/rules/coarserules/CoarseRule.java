@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import Maude.ModElement;
-import Maude.Term;
 import main.java.transformation.MyMaudeFactory;
 
 /**

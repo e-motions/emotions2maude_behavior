@@ -1,22 +1,17 @@
 package main.java.transformation.rules.coarserules;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import Maude.Constant;
 import Maude.Equation;
 import Maude.MaudeFactory;
 import Maude.ModElement;
 import Maude.Operation;
 import Maude.RecTerm;
-import behavior.ActionExec;
 import behavior.Pattern;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
-import main.java.transformation.rules.smallrules.CreateSetVariables;
-import main.java.transformation.rules.smallrules.CreateVariable;
-import main.java.transformation.rules.smallrules.ManyPatternElOid;
-import main.java.transformation.rules.smallrules.PatternElOid;
 import main.java.transformation.rules.smallrules.PatternNAC;
+import main.java.transformation.rules.smallrules.nac.FirstArgumentNAC;
+import main.java.transformation.rules.smallrules.nac.SecondArgumentNAC;
 
 /**
  * 
@@ -159,54 +154,31 @@ public class CreateNac extends CoarseRule {
 		Equation equation1 = mf.createEquation();
 		
 		/* lhs */
-		RecTerm lhsTerm = mf.createRecTerm();
-		lhsTerm.setOp(opName);
+		RecTerm lhsTerm = maudeFact.createRecTerm(MaudeIdentifiers.processSpecialChars(nac.getName().toLowerCase()) + "@" + nac.getRule().getName());
 		
 		/*
-		 * First argument: the set of Objects or Action executions in the NAC's LHS
+		 * First argument: the set of Objects or Action executions in the LHS
 		 */
-		
-		RecTerm set = mf.createRecTerm(); 
-		set.setOp("Set`{_`}");
-		List<behavior.Object> objects = nac.getEls().stream()
-				.filter(x -> x instanceof behavior.Object)
-				.map(o -> (behavior.Object) o)
-				.collect(Collectors.toList());
-		List<ActionExec> actions = nac.getEls().stream()
-				.filter(x -> x instanceof ActionExec)
-				.map(o -> (ActionExec) o)
-				.collect(Collectors.toList());
-		if(objects.isEmpty() && actions.isEmpty()) {
-			set.getArgs().add(maudeFact.getConstantEmpty());
-		} else if(objects.isEmpty() && actions.size() == 1) {
-			set.getArgs().add(new PatternElOid(maudeFact, actions.get(0)).get());
-		} else if(objects.size() == 1 && actions.isEmpty()) {
-			set.getArgs().add(new PatternElOid(maudeFact, objects.get(0)).get());
-		} else {
-			set.getArgs().add(new ManyPatternElOid(maudeFact, objects, actions).get());
-		}
-		
-		lhsTerm.getArgs().add(set);
+		lhsTerm.getArgs().add(new FirstArgumentNAC(maudeFact, nac).get());
 		
 		/*
 		 * Second argument: the set of Variables in the NAC's LHS
 		 */
-		
-		if(nac.getRule().getVbles().isEmpty()) {
-			/* thisModule.VariableEmpty('') */
-			lhsTerm.getArgs().add(maudeFact.getConstantNone());
-		} else if(nac.getRule().getVbles().size() == 1) {
-			/* thisModule.CreateVar(n."rule".vbles -> first(),1) */
-			lhsTerm.getArgs().add(new CreateVariable(maudeFact, nac.getRule().getVbles().get(0), 1).get());
-		} else {
-			/* thisModule.CreateSetVar(n."rule") */
-			lhsTerm.getArgs().add(new CreateSetVariables(maudeFact, nac.getRule().getVbles()).get());
-		}
+		lhsTerm.getArgs().add(new SecondArgumentNAC(maudeFact, nac).get());
 		
 		/* 
 		 * Third argument: the objects and action executions involved in the NAC 
 		 */
 		lhsTerm.getArgs().add(new PatternNAC(maudeFact, nac).get());
+		
+		/*
+		 * RHS of the equation
+		 */
+		
+		Constant rhsTerm = maudeFact.getConstant("true");
+		
+		equation1.setLhs(lhsTerm);
+		equation1.setRhs(rhsTerm);
 		
 		return equation1;
 	}
