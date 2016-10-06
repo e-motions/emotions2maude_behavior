@@ -2,6 +2,14 @@
 
 This file is intended to document the transformation from e-Motions behavior model to a Maude model.
 
+## How to install and contribute to this project
+
+Unfortunately, we cannot build this project using Maven, since we depend on the Behavior (e-Motions),
+GCS (e-Motions) and Maude metamodels. Such metamodels have been created by us and they are not available
+in a Nexus repository so far. That's why we packed this projects with such `.jar`s. However,
+there still is a dependency to be solve: [the EMF framework](http://www.eclipse.org/modeling/emf/downloads/).
+
+Once the project has been cloned, it can be imported using an Eclipse with the EMF framework installed.
 
 ## NAC patterns
 
@@ -78,7 +86,6 @@ object has structural features or not, meaning that it has out links and/or slot
 
 1. Why is needed to have into account the opposite links? maybe the readjust to set
 them up to null if deleted?
-
 2. Conditional NACs
 
 ### little to-dos
