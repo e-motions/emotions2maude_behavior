@@ -1,15 +1,13 @@
 package test.transformation.common;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import behavior.PatternEl;
+import behavior.Rule;
 import main.java.transformation.common.MaudeIdentifiers;
 import test.ParentTest;
 
@@ -24,14 +22,16 @@ public class MaudeIdentifiersTest extends ParentTest {
 	public void testClassVariableName() {
 		/* For trajectory objects */
 		boolean foundTrajectoryObj = false;
-		List<PatternEl> patterns = new ArrayList<>(trajectory.getBehavior().getRules().get(2).getLhs().getEls());
-		for (PatternEl p : patterns) {
-			if (p instanceof behavior.Object && ((behavior.Object) p).getId().equals("a")) {
-				assertEquals(MaudeIdentifiers.classVariableName((behavior.Object) p), "ARROW@DEFAULTNAME@a@CLASS");
-				foundTrajectoryObj = true;
+		Optional<Rule> snapshot = trajectory.getBehavior().getRules().stream().filter(r -> r.getName().equals("Snapshot")).findFirst();
+		if (snapshot.isPresent()) {
+			Optional<behavior.Object> obj = snapshot.get().getLhs().getEls().stream()
+				.filter(p -> p instanceof behavior.Object && ((behavior.Object) p).getId().equals("a"))
+				.map(p -> (behavior.Object) p)
+				.findFirst();
+			if (obj.isPresent()) {
+				foundTrajectoryObj = MaudeIdentifiers.classVariableName(obj.get()).equals("ARROW@DEFAULTNAME@a@CLASS");
 			}
 		}
 		assertTrue(foundTrajectoryObj);
 	}
-
 }

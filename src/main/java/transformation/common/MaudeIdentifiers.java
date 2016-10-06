@@ -1,8 +1,13 @@
 package main.java.transformation.common;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
+import behavior.Object;
+import behavior.Slot;
 import gcs.ClassGD;
 
 public final class MaudeIdentifiers {
@@ -58,11 +63,11 @@ public final class MaudeIdentifiers {
 	 * @param epack
 	 * @return
 	 */
-	private static String getPackageName(EPackage epack) {
+	private static String get(EPackage epack) {
 		if (epack.getESuperPackage() == null) {
 			return epack.getName();
 		} else {
-			return epack.getName() + "@" + getPackageName(epack.getESuperPackage());
+			return epack.getName() + "@" + get(epack.getESuperPackage());
 		}
 	}
 	
@@ -83,11 +88,68 @@ public final class MaudeIdentifiers {
 		ClassGD classGD = (ClassGD) obj.getClassGD();
 		EClass eclass = (EClass) classGD.getClass_();
 		return eclass.getEPackage() == null? eclass.getName() 
-				: eclass.getName() + "@" + getPackageName(eclass.getEPackage());
+				: eclass.getName() + "@" + get(eclass.getEPackage());
 	}
 
-	public static String sfs(behavior.Object obj) {
+	public static String sfsVariableName(behavior.Object obj) {
 		return obj.getId() + "@SFS";
 	}
 
+	public static String processSpecialChars(String name) {
+		return name;
+	}
+	
+	
+	/**
+	 * It is used for getting the name of the structural feature representing this 
+	 * reference. The original ATL rule is:
+	 * <pre>
+	 * helper context Behavior!EStructuralFeature def : maudeName() : String =
+     *   self.name + '@' + self.eContainingClass.maudeName();
+	 * </pre>
+	 * @param ref
+	 * @return
+	 */
+	public static String get(EStructuralFeature sf) {
+		return sf.getName() + "@" + get(sf.getEContainingClass());
+	}
+	
+	/**
+	 * The original ATL code is:
+	 * <pre>
+	 * helper context Behavior!EClassifier def : maudeName() : String =
+	 *	    if (self.ePackage.oclIsUndefined()) then 
+	 *			self.name
+	 *	    else 
+	 *	    	self.name + '@' + self.ePackage.maudeName()  
+	 *	    endif;
+	 * </pre>
+	 * @param epack
+	 * @return
+	 */
+	public static String get(EClass _class) {
+		String res = _class.getName();
+		if (_class.getEPackage() != null) {
+			res += "@" + get(_class.getEPackage());
+		} 
+		return res;
+	}
+	
+	/**
+	 * Should generate a variable identifier for a reference which cannot be set in the matching.
+	 * The original code is: <code>linkRef.name.toUpper().processSpecOpChars()+'@'+objId+'@ATT'</code>
+	 * @param obj source of the link
+	 * @param ref name of the reference
+	 * @return the identifier
+	 */
+	public static String getRefIdentifier(Object obj, EReference ref) {
+		return ref.getName().toUpperCase() + "@" + obj.getId() + "@ATT";
+	}
+
+	public static String getVariable(Slot slot) {
+		/* slot.sf.name.toUpper().processSpecOpChars() + '@' + slot.object.id + '@ATT' */
+		return ((EAttribute) slot.getSf()).getName().toUpperCase() + "@" + slot.getObject().getId() + "@ATT";
+	}
+
+	
 }

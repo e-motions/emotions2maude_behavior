@@ -26,7 +26,7 @@
     <els xsi:type="Maude:Sort" name="Set"/>
     <els xsi:type="Maude:Sort" name="Set{@Object}"/>
     <els xsi:type="Maude:Sort" name="@Model"/>
-    <els xsi:type="Maude:Sort" name="Bool"/>
+    <els xsi:type="Maude:Sort" name="@Bool"/>
     <els xsi:type="Maude:Sort" name="OCL-Type"/>
   </els>
   <els xsi:type="Maude:SModule" name="DENSE_TIME"/>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gcs:MetamodelGD xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:gcs="http://www.lcc.uma.es/GCS/1.0" name="@TEST@">
+  <packagesGD name="TEST">
+    <classesGD name="A">
+      <class href="My.ecore#//A"/>
+    </classesGD>
+    <classesGD name="B">
+      <class href="My.ecore#//B"/>
+    </classesGD>
+    <package href="My.ecore#/"/>
+  </packagesGD>
+</gcs:MetamodelGD>

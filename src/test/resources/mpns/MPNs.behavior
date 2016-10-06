@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<behavior:Behavior
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:behavior="http://www.lcc.uma.es/Behavior/1.0">
+  <metamodelGD
+      href="MPNs.gcs#/"/>
+  <helpers oclExpression="context Antenna::distance(p : Phone): Integer body: (self.xPos - p.xPos).abs() +(self.yPos - p.yPos).abs()"/>
+  <helpers oclExpression="context Integer::correctPos(limit : Integer) : Integer body: if (self > limit) then (limit - (self-limit)).correctPos(limit) else if (self &lt; 0) then (- self).correctPos(limit) else self endif endif"/>
+  <helpers oclExpression="context Integer::correctV(pos : Integer, limit : Integer) : Integer body: if (pos > limit) then ((-1).power(pos.div(limit)) * self) else if (pos &lt; 0) then ((-1) * (-1).power(pos.abs().div(limit)) * self) else self endif endif"/>
+  <helpers oclExpression="context Integer::power(n : Integer) : Integer body: if (n = 0) then 1 else (self * self.power(n-1)) endif "/>
+  <rules xsi:type="behavior:AtomicRule"
+      name="SwitchOn"
+      lhs="//@rules.0/@patterns.0"
+      rhs="//@rules.0/@patterns.1"
+      maxDuration="5"
+      minDuration="5"
+      periodicity="0.0">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="false">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Condition"
+          oclValue="p.battery > 5 * p.bps"/>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <sfs
+            oclValue="p.battery - 5 * p.bps">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="BatteryOff"
+      lhs="//@rules.1/@patterns.0"
+      rhs="//@rules.1/@patterns.1"
+      nacs="//@rules.1/@patterns.2"
+      maxDuration="0">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="false">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns
+        name="PisNotInACall">
+      <els xsi:type="behavior:ActionExec"
+          action="Call"
+          id="c">
+        <participants
+            actualObject="//@rules.1/@patterns.0/@els.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="InitialModel"
+      lowerBound="0.0"
+      upperBound="-1.0"
+      lhs="//@rules.2/@patterns.0"
+      rhs="//@rules.2/@patterns.1"
+      nacs="//@rules.2/@patterns.2"
+      maxDuration="0">
+    <patterns
+        name="LHS"/>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p1"
+          outLinks="//@rules.2/@patterns.1/@els.9 //@rules.2/@patterns.1/@els.18 //@rules.2/@patterns.1/@els.24"
+          inLinks="//@rules.2/@patterns.1/@els.7 //@rules.2/@patterns.1/@els.8 //@rules.2/@patterns.1/@els.16 //@rules.2/@patterns.1/@els.23">
+        <sfs
+            oclValue="111">
+          <sf
+              href="MPNs.ecore#//Phone/number"/>
+        </sfs>
+        <sfs
+            oclValue="100">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/bps"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/vx"/>
+        </sfs>
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/vy"/>
+        </sfs>
+        <sfs
+            oclValue="5">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="55">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2"
+          outLinks="//@rules.2/@patterns.1/@els.8 //@rules.2/@patterns.1/@els.20 //@rules.2/@patterns.1/@els.22"
+          inLinks="//@rules.2/@patterns.1/@els.9 //@rules.2/@patterns.1/@els.10 //@rules.2/@patterns.1/@els.15 //@rules.2/@patterns.1/@els.21">
+        <sfs
+            oclValue="222">
+          <sf
+              href="MPNs.ecore#//Phone/number"/>
+        </sfs>
+        <sfs
+            oclValue="50">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/bps"/>
+        </sfs>
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/vx"/>
+        </sfs>
+        <sfs
+            oclValue="-1">
+          <sf
+              href="MPNs.ecore#//Phone/vy"/>
+        </sfs>
+        <sfs
+            oclValue="45">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="35">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p3"
+          outLinks="//@rules.2/@patterns.1/@els.16 //@rules.2/@patterns.1/@els.19 //@rules.2/@patterns.1/@els.21"
+          inLinks="//@rules.2/@patterns.1/@els.12 //@rules.2/@patterns.1/@els.17 //@rules.2/@patterns.1/@els.18 //@rules.2/@patterns.1/@els.22">
+        <sfs
+            oclValue="333">
+          <sf
+              href="MPNs.ecore#//Phone/number"/>
+        </sfs>
+        <sfs
+            oclValue="100">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/bps"/>
+        </sfs>
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/vx"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/vy"/>
+        </sfs>
+        <sfs
+            oclValue="15">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="15">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p4"
+          outLinks="//@rules.2/@patterns.1/@els.15 //@rules.2/@patterns.1/@els.17 //@rules.2/@patterns.1/@els.23"
+          inLinks="//@rules.2/@patterns.1/@els.11 //@rules.2/@patterns.1/@els.19 //@rules.2/@patterns.1/@els.20 //@rules.2/@patterns.1/@els.24">
+        <sfs
+            oclValue="444">
+          <sf
+              href="MPNs.ecore#//Phone/number"/>
+        </sfs>
+        <sfs
+            oclValue="50">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <sfs
+            oclValue="1">
+          <sf
+              href="MPNs.ecore#//Phone/bps"/>
+        </sfs>
+        <sfs
+            oclValue="-1">
+          <sf
+              href="MPNs.ecore#//Phone/vx"/>
+        </sfs>
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/vy"/>
+        </sfs>
+        <sfs
+            oclValue="65">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="25">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a1"
+          inLinks="//@rules.2/@patterns.1/@els.13">
+        <sfs
+            oclValue="25">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="35">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a2"
+          inLinks="//@rules.2/@patterns.1/@els.14">
+        <sfs
+            oclValue="55">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="15">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="mpn"
+          outLinks="//@rules.2/@patterns.1/@els.7 //@rules.2/@patterns.1/@els.10 //@rules.2/@patterns.1/@els.11 //@rules.2/@patterns.1/@els.12 //@rules.2/@patterns.1/@els.13 //@rules.2/@patterns.1/@els.14">
+        <sfs
+            oclValue="80">
+          <sf
+              href="MPNs.ecore#//MPN/xSize"/>
+        </sfs>
+        <sfs
+            oclValue="50">
+          <sf
+              href="MPNs.ecore#//MPN/ySize"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.3"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.1"
+          target="//@rules.2/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.0"
+          target="//@rules.2/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.4">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.6"
+          target="//@rules.2/@patterns.1/@els.5">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.3"
+          target="//@rules.2/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.2"
+          target="//@rules.2/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.3"
+          target="//@rules.2/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.0"
+          target="//@rules.2/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.2"
+          target="//@rules.2/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.1"
+          target="//@rules.2/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.2"
+          target="//@rules.2/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.1"
+          target="//@rules.2/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.3"
+          target="//@rules.2/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.2/@patterns.1/@els.0"
+          target="//@rules.2/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+    </patterns>
+    <patterns
+        name="NotExecutedBefore">
+      <els xsi:type="behavior:ActionExec"
+          action="InitialModel"
+          id="a"
+          status="realized"/>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:OngoingRule"
+      name="BatteryConsumption"
+      lhs="//@rules.3/@patterns.0"
+      rhs="//@rules.3/@patterns.1"
+      maxDuration="p.battery / p.bps">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="p.battery - T * p.bps">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="Call"
+      soft="true"
+      lhs="//@rules.4/@patterns.0"
+      rhs="//@rules.4/@patterns.1"
+      nacs="//@rules.4/@patterns.2 //@rules.4/@patterns.3"
+      maxDuration="30"
+      minDuration="20">
+    <vbles name="initTime"
+        type="Int"
+        value="cl.time"/>
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p1"
+          outLinks="//@rules.4/@patterns.0/@els.4">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2"
+          inLinks="//@rules.4/@patterns.0/@els.4">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Clock"
+          id="cl"/>
+      <els xsi:type="behavior:Condition"
+          oclValue="p1.coverage > 0 and p2.coverage > 0 "/>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.0/@els.0"
+          target="//@rules.4/@patterns.0/@els.1">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p1"
+          outLinks="//@rules.4/@patterns.1/@els.5 //@rules.4/@patterns.1/@els.6"
+          inLinks="//@rules.4/@patterns.1/@els.7">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2"
+          outLinks="//@rules.4/@patterns.1/@els.9"
+          inLinks="//@rules.4/@patterns.1/@els.6 //@rules.4/@patterns.1/@els.8">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c1"
+          outLinks="//@rules.4/@patterns.1/@els.8"
+          inLinks="//@rules.4/@patterns.1/@els.5">
+        <sfs
+            oclValue="T">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="initTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c2"
+          outLinks="//@rules.4/@patterns.1/@els.7"
+          inLinks="//@rules.4/@patterns.1/@els.9">
+        <sfs
+            oclValue="T">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="initTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Clock"
+          id="cl"/>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.1/@els.0"
+          target="//@rules.4/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/dialedCalls"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.1/@els.0"
+          target="//@rules.4/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//Phone/contacts"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.1/@els.3"
+          target="//@rules.4/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.1/@els.2"
+          target="//@rules.4/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.4/@patterns.1/@els.1"
+          target="//@rules.4/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/receivedCalls"/>
+      </els>
+    </patterns>
+    <patterns
+        name="P1isNotInACall">
+      <els xsi:type="behavior:ActionExec"
+          action="Call"
+          id="a">
+        <participants
+            actualObject="//@rules.4/@patterns.0/@els.0"/>
+      </els>
+    </patterns>
+    <patterns
+        name="P2isNotInACall">
+      <els xsi:type="behavior:ActionExec"
+          action="Call"
+          id="a">
+        <participants
+            actualObject="//@rules.4/@patterns.0/@els.1"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="Coverage"
+      lhs="//@rules.5/@patterns.0"
+      rhs="//@rules.5/@patterns.1"
+      nacs="//@rules.5/@patterns.2"
+      maxDuration="1"
+      minDuration="1"
+      periodicity="5.0">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="true">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <sfs
+            oclValue="if (a.distance(p) > 30) then 0 else 3 - (a.distance(p).div(10)) endif ">
+          <sf
+              href="MPNs.ecore#//Phone/coverage"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+    </patterns>
+    <patterns
+        name="NoCloserAntenna">
+      <els xsi:type="behavior:Object"
+          id="p">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="a2">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.2"/>
+      </els>
+      <els xsi:type="behavior:Condition"
+          oclValue="a2.distance(p) &lt; a.distance(p)"/>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:OngoingRule"
+      name="Moving"
+      lhs="//@rules.6/@patterns.0"
+      rhs="//@rules.6/@patterns.1">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p"
+          inLinks="//@rules.6/@patterns.0/@els.2">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="mpn"
+          outLinks="//@rules.6/@patterns.0/@els.2">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.3"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.6/@patterns.0/@els.1"
+          target="//@rules.6/@patterns.0/@els.0"
+          pos="">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p"
+          inLinks="//@rules.6/@patterns.1/@els.2">
+        <sfs
+            oclValue="(p.xPos + T * p.vx).correctPos(mpn.xSize)">
+          <sf
+              href="MPNs.ecore#//PositionedEl/xPos"/>
+        </sfs>
+        <sfs
+            oclValue="(p.yPos + T * p.vy).correctPos(mpn.ySize)">
+          <sf
+              href="MPNs.ecore#//PositionedEl/yPos"/>
+        </sfs>
+        <sfs
+            oclValue="(p.vx).correctV(p.xPos + T * p.vx, mpn.xSize)">
+          <sf
+              href="MPNs.ecore#//Phone/vx"/>
+        </sfs>
+        <sfs
+            oclValue="(p.vy).correctV(p.yPos + T * p.vy, mpn.ySize)">
+          <sf
+              href="MPNs.ecore#//Phone/vy"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="mpn"
+          outLinks="//@rules.6/@patterns.1/@els.2">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.3"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.6/@patterns.1/@els.1"
+          target="//@rules.6/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//MPN/els"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="BatteryOffCallee"
+      lhs="//@rules.7/@patterns.0"
+      rhs="//@rules.7/@patterns.1"
+      maxDuration="0">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p1">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2">
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:ActionExec"
+          action="Call"
+          id="c">
+        <participants
+            actualObject="//@rules.7/@patterns.0/@els.0"
+            role="//@rules.4/@patterns.0/@els.0"/>
+        <participants
+            actualObject="//@rules.7/@patterns.0/@els.1"
+            role="//@rules.4/@patterns.0/@els.1"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p1"
+          outLinks="//@rules.7/@patterns.1/@els.5"
+          inLinks="//@rules.7/@patterns.1/@els.4">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2"
+          outLinks="//@rules.7/@patterns.1/@els.6"
+          inLinks="//@rules.7/@patterns.1/@els.7">
+        <sfs
+            oclValue="false">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c1"
+          outLinks="//@rules.7/@patterns.1/@els.7"
+          inLinks="//@rules.7/@patterns.1/@els.5">
+        <sfs
+            oclValue="c.executionTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="c.startingTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c2"
+          outLinks="//@rules.7/@patterns.1/@els.4"
+          inLinks="//@rules.7/@patterns.1/@els.6">
+        <sfs
+            oclValue="c.executionTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="c.startingTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.7/@patterns.1/@els.3"
+          target="//@rules.7/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.7/@patterns.1/@els.0"
+          target="//@rules.7/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/dialedCalls"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.7/@patterns.1/@els.1"
+          target="//@rules.7/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/receivedCalls"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.7/@patterns.1/@els.2"
+          target="//@rules.7/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+    </patterns>
+  </rules>
+  <rules xsi:type="behavior:AtomicRule"
+      name="BatteryOffCaller"
+      lhs="//@rules.8/@patterns.0"
+      rhs="//@rules.8/@patterns.1"
+      maxDuration="0">
+    <patterns
+        name="LHS">
+      <els xsi:type="behavior:Object"
+          id="p1">
+        <sfs
+            oclValue="0">
+          <sf
+              href="MPNs.ecore#//Phone/battery"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:ActionExec"
+          action="Call"
+          id="c">
+        <participants
+            actualObject="//@rules.8/@patterns.0/@els.0"
+            role="//@rules.4/@patterns.0/@els.0"/>
+        <participants
+            actualObject="//@rules.8/@patterns.0/@els.1"
+            role="//@rules.4/@patterns.0/@els.1"/>
+      </els>
+    </patterns>
+    <patterns
+        name="RHS">
+      <els xsi:type="behavior:Object"
+          id="p1"
+          outLinks="//@rules.8/@patterns.1/@els.4"
+          inLinks="//@rules.8/@patterns.1/@els.7">
+        <sfs
+            oclValue="false">
+          <sf
+              href="MPNs.ecore#//Phone/on"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="p2"
+          outLinks="//@rules.8/@patterns.1/@els.6"
+          inLinks="//@rules.8/@patterns.1/@els.5">
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.0"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c1"
+          outLinks="//@rules.8/@patterns.1/@els.5"
+          inLinks="//@rules.8/@patterns.1/@els.4">
+        <sfs
+            oclValue="c.executionTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="c.startingTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Object"
+          id="c2"
+          outLinks="//@rules.8/@patterns.1/@els.7"
+          inLinks="//@rules.8/@patterns.1/@els.6">
+        <sfs
+            oclValue="c.executionTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/duration"/>
+        </sfs>
+        <sfs
+            oclValue="c.startingTime">
+          <sf
+              href="MPNs.ecore#//CallRecord/startingTime"/>
+        </sfs>
+        <classGD
+            href="MPNs.gcs#//@packagesGD.0/@classesGD.1"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.8/@patterns.1/@els.0"
+          target="//@rules.8/@patterns.1/@els.2">
+        <ref
+            href="MPNs.ecore#//Phone/dialedCalls"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.8/@patterns.1/@els.2"
+          target="//@rules.8/@patterns.1/@els.1">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.8/@patterns.1/@els.1"
+          target="//@rules.8/@patterns.1/@els.3">
+        <ref
+            href="MPNs.ecore#//Phone/receivedCalls"/>
+      </els>
+      <els xsi:type="behavior:Link"
+          src="//@rules.8/@patterns.1/@els.3"
+          target="//@rules.8/@patterns.1/@els.0">
+        <ref
+            href="MPNs.ecore#//CallRecord/contact"/>
+      </els>
+    </patterns>
+  </rules>
+</behavior:Behavior>
