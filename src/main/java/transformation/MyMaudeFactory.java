@@ -7,10 +7,10 @@ import Maude.Constant;
 import Maude.MaudeFactory;
 import Maude.Operation;
 import Maude.RecTerm;
+import Maude.Rule;
 import Maude.Sort;
 import Maude.Term;
 import Maude.Variable;
-import main.java.exceptions.NotValidArgumentsE2MException;
 import main.java.transformation.common.MaudeIdentifiers;
 import main.java.transformation.utils.MaudeOperators;
 
@@ -144,12 +144,10 @@ public class MyMaudeFactory {
 	 * @param args
 	 * @return the RecTerm
 	 */
-	public RecTerm createStructuralFeature(List<Term> args) {
-		if (args.size() != 2) {
-			throw new NotValidArgumentsE2MException("It must have exactly 2 arguments.");
-		}
+	public RecTerm createStructuralFeature(Term name, Term value) {
 		RecTerm res = createRecTerm(MaudeOperators.SF);
-		res.getArgs().addAll(args);
+		res.getArgs().add(name);
+		res.getArgs().add(value);
 		return res;
 	}
 	
@@ -234,6 +232,19 @@ public class MyMaudeFactory {
 		res.setType(emotionsModule.getSort("MSet{OCL-Exp}"));
 		return res;
 	}
+	
+	/**
+	 *  Creates a variable with name and sort given by arguments.
+	 * @param name of the variable
+	 * @param sort name of the variable
+	 * @return the Maude variable
+	 */
+	public Variable createVariable(String name, String sort) {
+		Variable res = factory.createVariable();
+		res.setName(name);
+		res.setType(emotionsModule.getSort(sort));
+		return res;
+	}
 
 	public Operation createOperation(String name) {
 		Operation res = factory.createOperation();
@@ -244,5 +255,17 @@ public class MyMaudeFactory {
 	public Sort getSort(String name) {
 		return emotionsModule.getSort(name);
 	}
+
+	/**
+	 * Creates a Maude rule with label given by the param.
+	 * @param ruleLabel
+	 * @return
+	 */
+	public Rule createRule(String ruleLabel) {
+		Rule res = factory.createRule();
+		res.setLabel(ruleLabel);
+		return res;
+	}
+
 
 }

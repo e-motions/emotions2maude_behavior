@@ -11,7 +11,9 @@ there still is a dependency to be solve: [the EMF framework](http://www.eclipse.
 
 Once the project has been cloned, it can be imported using an Eclipse with the EMF framework installed.
 
-## NAC patterns
+## Transformation elements
+
+### NAC patterns
 
 NAC patterns are present in the behavior rules. There might be zero or more NACs per rule. The Java class `CreateNac` creates all the elements needed to deal with them in Maude.
 
@@ -73,11 +75,14 @@ object has structural features or not, meaning that it has out links and/or slot
     - *One or more links whose reference is a Bag*: If `pos` has been set, an exception is thrown. It is specified using the matching.
     - *Others*: A variable is created and afterwards it will be checked using mOdCL.
 
-
-
 *Branstorming*. `Oid`s are represented as OCL-Type variables when used in Maude objects.
 
 ### Optimizations
+
+## Code structure
+
+### Coarse Rules
+**CoarseRule** is a class which returns one or more `ModElement`s, i.e. `Operation`s, `Equation`s or `Rule`s.
 
 #### 1. Links
 

@@ -96,10 +96,9 @@ public class CreateVariable extends Rule {
 			),
 		 */
 		
-		List<Term> nameArgs = new ArrayList<>();
-		nameArgs.add(maudeFact.getConstant("name@Variable@MGBehavior"));
-		nameArgs.add(maudeFact.getConstant("\"" + behVar.getName() + "\""));
-		RecTerm nameRecTerm = maudeFact.createStructuralFeature(nameArgs);
+		RecTerm nameRecTerm = maudeFact.createStructuralFeature(
+				maudeFact.getConstant("name@Variable@MGBehavior"),
+				maudeFact.getConstant("\"" + behVar.getName() + "\""));
 		
 		/*
 		 * value : Maude!RecTerm(
@@ -116,10 +115,9 @@ public class CreateVariable extends Rule {
 			type <- thisModule.oclTypeSort
 			)
 		 */
-		List<Term> valueArgs = new ArrayList<>();
-		valueArgs.add(maudeFact.getConstant("value@Variable@MGBehavior"));
-		valueArgs.add(maudeFact.getVariableOCLType(behVar.getName()));
-		RecTerm value = maudeFact.createStructuralFeature(valueArgs);
+		RecTerm value = maudeFact.createStructuralFeature(
+				maudeFact.getConstant("value@Variable@MGBehavior"),
+				maudeFact.getVariableOCLType(behVar.getName()));
 		
 		/*
 		 * argms : Maude!RecTerm(

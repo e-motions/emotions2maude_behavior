@@ -306,6 +306,8 @@ public class AtomicRuleInstantaneousNotPeriodic extends CoarseRule {
 		if (!rule.isSoft() && !(rule.getPeriodicity() > 0.0)){			
 			res.addAll(new CreateMTE(maudeFact, rule).get());
 		}
+		/* Rule */
+		res.addAll(new CreateInstantaneousRl(maudeFact, rule).get());
 	}
 
 }
