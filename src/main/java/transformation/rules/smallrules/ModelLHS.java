@@ -1,9 +1,9 @@
 package main.java.transformation.rules.smallrules;
 
 import Maude.RecTerm;
-import Maude.Variable;
 import behavior.Pattern;
 import main.java.transformation.MyMaudeFactory;
+import main.java.transformation.common.OrderingTerms;
 import main.java.transformation.utils.MaudeOperators;
 
 /**
@@ -41,7 +41,7 @@ public class ModelLHS extends Rule {
 	
 	/**
 	 * Creates a clock object.
-	 * @return
+	 * @return the same model with the clock added.
 	 */
 	public ModelLHS withClock() {
 		/* model and res are the same */
@@ -67,7 +67,7 @@ public class ModelLHS extends Rule {
 	
 	/**
 	 * Creates a id counter object.
-	 * @return
+	 * @returnthe same model with the id counter object added.
 	 */
 	public ModelLHS withIdCounter() {
 		/* model and res are the same */
@@ -84,7 +84,33 @@ public class ModelLHS extends Rule {
 			set = (RecTerm) model.getArgs().get(1);
 		}
 		
-		set.getArgs().add(new ClockObject(maudeFact).get());
+		set.getArgs().add(new IdCounterObject(maudeFact).get());
+		
+		objsetVariableToTheEnd();
+		
+		return this;
+	}
+	
+	/**
+	 * Creates a id counter object.
+	 * @returnthe same model with the id counter object added.
+	 */
+	public ModelLHS withRandomCounter() {
+		/* model and res are the same */
+		if (model == null) {
+			transform();
+		}
+		RecTerm set;
+		/* the term of the model is just the objset variable? */
+		if (model.getArgs().get(1) instanceof Maude.Variable) {
+			set = maudeFact.createRecTerm(MaudeOperators.SET);
+			set.getArgs().add(model.getArgs().get(1));
+			model.getArgs().add(set);
+		} else {
+			set = (RecTerm) model.getArgs().get(1);
+		}
+		
+		set.getArgs().add(new RandomCounterObject(maudeFact).get());
 		
 		objsetVariableToTheEnd();
 		
@@ -97,10 +123,7 @@ public class ModelLHS extends Rule {
 	 */
 	private void objsetVariableToTheEnd() {
 		RecTerm set = (RecTerm) model.getArgs().get(1);
-		Maude.Variable objset = (Variable) set.getArgs().stream()
-				.filter(e -> e instanceof Maude.Variable && ((Variable) e).getName().equals("OBJSET@")).findFirst().get();
-		set.getArgs().remove(set.getArgs().indexOf(objset));
-		set.getArgs().add(objset);
+		OrderingTerms.objsetAtTheEnd(set);
 	}
 
 }

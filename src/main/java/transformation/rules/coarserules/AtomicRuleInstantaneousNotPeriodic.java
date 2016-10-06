@@ -112,10 +112,7 @@ import main.java.transformation.MyMaudeFactory;
 					rl.objActExecRHSRule()->collect(i|if i.oclIsTypeOf(Behavior!Object) then rl.ObjectRHS2RecTermApplyOngoing(i)		
 													else thisModule.ActEx2RecTerm(i,true)
 													endif),
-					--thisModule.CreateTimerRealization(rl,true),
 					thisModule.CreateClock(rl.rhs),
-					--thisModule.CreateCounter(rl.numObjCreatedInstantaneous()+1),
-					--thisModule.CreateCounter(rl.numObjCreatedInstantaneousAux()+1),
 					thisModule.CreateRandomCounter(true),thisModule.CreateOBJSET('')
 					}
 					->union(if rl.periodicity > 0.0 then Sequence{thisModule.CreateTimerRealization(rl,true),thisModule.CreateCounter(rl.numObjCreatedInstantaneous()+rl.vbles->size()+1)}

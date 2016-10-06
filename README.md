@@ -13,7 +13,33 @@ Once the project has been cloned, it can be imported using an Eclipse with the E
 
 ## Transformation elements
 
-### NAC patterns
+### Instantaneous rules
+
+Those behavior rules which have `minDuration` set to 0 are Instantaneous and they (i) do not create an action and (ii) are performed consuming 0 time.
+
+For each of these rules we will create:
+1. A **MTE**.
+2. A **Rule**.
+3. Zero or more [**NACs**](#NAC-patterns).
+
+Here we explain how to create the rule.
+
+The rule has as label the name of the e-Motions rule concatenated with the string `@Instantaneous`.
+The left-hand side (LHS) has the model to be match. It is created by the Java class `ModelLHS`.
+The right-hand side (RHS) has the `readjust` operator.
+
+The `readjust` operator performs the deletion of objects that are specified in the in-place rule to be
+deleted. This is because when an object is deleted more computations than simply not including that object
+in the RHS is needed. Since contained objects or dangling references should be deleted too. The `readjust`
+operation is also responsible of aborting those actions being performed if any of its participants is deleted.
+The `readjust` operator has three arguments:
+1. The deleted elements.
+2. The deleted links.
+3. The RHS model.
+
+If there is neither deleted objects nor links, it means that we do not need the readjust operator.
+
+### NAC patterns
 
 NAC patterns are present in the behavior rules. There might be zero or more NACs per rule. The Java class `CreateNac` creates all the elements needed to deal with them in Maude.
 
