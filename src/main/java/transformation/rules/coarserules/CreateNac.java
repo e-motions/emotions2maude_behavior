@@ -199,7 +199,7 @@ public class CreateNac extends CoarseRule {
 		res.getArity().add(maudeFact.getSort("Set"));
 		res.getArity().add(maudeFact.getSort("Set{@Object}"));
 		res.getArity().add(maudeFact.getSort("@Model"));
-		res.setCoarity(maudeFact.getSort("@Bool"));
+		res.setCoarity(maudeFact.getSort("Bool"));
 		return res;
 	}
 	
