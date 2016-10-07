@@ -195,6 +195,14 @@ public class MyMaudeFactory {
 	}
 	
 	/**
+	 * Given a behavior Object, it returns a constant with its Cid.
+	 */
+	public Constant createConstantCid(behavior.Object obj) {
+		Constant res = getConstant(MaudeIdentifiers.class2sort(obj));
+		return res;
+	}
+	
+	/**
 	 * Given a behavior object, it creates the variable to match with the structural features not
 	 * explicitly listed in the Maude object.
 	 * @param obj
@@ -266,6 +274,8 @@ public class MyMaudeFactory {
 		res.setLabel(ruleLabel);
 		return res;
 	}
+
+	
 
 
 }

@@ -18,6 +18,7 @@ import main.java.exceptions.EmotionsNotCompletedModel;
 import main.java.exceptions.PosNotValid;
 import main.java.transformation.MyMaudeFactory;
 import main.java.transformation.common.MaudeIdentifiers;
+import main.java.transformation.common.ObjectOperations;
 import main.java.transformation.utils.MaudeOperators;
 
 /**
@@ -92,7 +93,7 @@ import main.java.transformation.utils.MaudeOperators;
  * </pre>
  * 
  * 
- * ## AllObjectReferences helper
+ * ##ï¿½AllObjectReferences helper
  * <pre>
  * helper def : AllObjectReferences(r:Sequence(Behavior!EReference),op:Sequence(Behavior!EReference)) : Sequence(Behavior!EReference) =
  *	 r->union(op)->asSet()->asSequence();
@@ -124,7 +125,7 @@ public class ObjectStructFeatLHS extends Rule {
 			 * Links to references 
 			 * 
 			 */
-			Map<EReference, List<Link>> references = mapRef2Links(obj.getOutLinks());
+			Map<EReference, List<Link>> references = ObjectOperations.mapRef2Links(obj.getOutLinks());
 			for (EReference ref : references.keySet()) {
 				// Links2RecTerm
 				
@@ -248,29 +249,4 @@ public class ObjectStructFeatLHS extends Rule {
 	private boolean posNotSet(Link link) {
 		return link.getPos() == null || link.getPos().equals("");
 	}
-
-	/**
-	 * Given a list of behavior links, it returns a Map association EReferences to Links.
-	 * 
-	 * The ATL code is:
-	 * <pre>
-	 * helper def : RefWithoutDuplicates( inCollection : Sequence(Behavior!Link) ) : Sequence(Behavior!EReference) =
-	 *	inCollection -> iterate(e; outCollection : Sequence(Behavior!EReference) = Sequence{} |
-	 *		if outCollection ->one(i|i=e.ref) then outCollection
-	 *		else outCollection ->append(e.ref)
-	 *		endif);
-	 * </pre>
-	 * 
-	 * @param links
-	 * @return map of EReferences
-	 */
-	private Map<EReference, List<Link>> mapRef2Links(List<Link> links) {
-		Set<EReference> refs = links.stream().map(r -> (EReference) r.getRef()).collect(Collectors.toSet());
-		Map<EReference, List<Link>> res = new HashMap<EReference, List<Link>>();
-		for (EReference r : refs) {
-			res.put(r, links.stream().filter(ref -> (ref.getRef() == r)).collect(Collectors.toList()));
-		}
-		return res;
-	}
-
 }

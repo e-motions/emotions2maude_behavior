@@ -39,6 +39,14 @@ The `readjust` operator has three arguments:
 
 If there is neither deleted objects nor links, it means that we do not need the readjust operator.
 
+#### `Update` operation for links
+
+The `update` operation has four arguments:
+1. The reference name
+2. The variable with the value of the structural feature
+3. The list of links to delete
+4. The list of links to add
+
 ### NAC patterns
 
 NAC patterns are present in the behavior rules. There might be zero or more NACs per rule. The Java class `CreateNac` creates all the elements needed to deal with them in Maude.

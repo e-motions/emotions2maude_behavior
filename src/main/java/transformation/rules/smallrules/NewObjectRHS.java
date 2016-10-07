@@ -1,7 +1,18 @@
 package main.java.transformation.rules.smallrules;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.emf.ecore.EReference;
+
+import Maude.Constant;
 import Maude.RecTerm;
+import behavior.Link;
 import main.java.transformation.MyMaudeFactory;
+import main.java.transformation.common.MaudeIdentifiers;
+import main.java.transformation.common.ObjectOperations;
+import main.java.transformation.utils.MaudeOperators;
 
 /**
  * 
@@ -28,9 +39,7 @@ import main.java.transformation.MyMaudeFactory;
  *					else
  *						if (obj.outLinks -> isEmpty() and obj.OppositeLinks()->isEmpty())and(obj.sfs->size()=1) then thisModule.Slots2RecTermRHS(obj.sfs->first())
 						else
-							if (obj.sfs -> isEmpty())and thisModule.AllObjectReferences(thisModule.RefWithoutDuplicates(obj.outLinks),obj.OppositeLinks())->size()=1 then --(obj.outLinks->size()=1) then 
-								--thisModule.LinksAddRefRHS(obj.outLinks->first())
-								--thisModule.RefWithoutDuplicates(obj.outLinks)->collect(r|thisModule.LinksUpdate(r,obj,true))
+							if (obj.sfs -> isEmpty())and thisModule.AllObjectReferences(thisModule.RefWithoutDuplicates(obj.outLinks),obj.OppositeLinks())->size()=1 then
 								thisModule.AllObjectReferences(thisModule.RefWithoutDuplicates(obj.outLinks),obj.OppositeLinks())-> collect(r|thisModule.LinksUpdate(r,obj,true))
 							else thisModule.NewObjectArgmsRHS(obj)
 							endif
@@ -66,9 +75,99 @@ public class NewObjectRHS extends Rule {
 	public void transform() {
 		res = maudeFact.createRecTerm("complete");
 		
+		Maude.Variable id = maudeFact.getVariableOCLType(behObject.getId());
+		Maude.Constant cid = maudeFact.createConstantCid(behObject);
 		
+		/* 
+		 * Structural Features
+		 */
+		RecTerm sfi = null;
+		if (behObject.getOutLinks().isEmpty() && behObject.getSfs().isEmpty()) {
+			// constant empty
+			/* TODO need more cases */
+		} else {
+			/* OutLinks and Sfs */
+			/** 
+			 * This code is like:
+			 * <pre>
+			 * lazy rule NewObjectArgmsRHS{
+			 *	from
+			 *		obj : Behavior!Object
+			 *	to
+			 *		sfi : Maude!RecTerm(
+			 *			op <- thisModule.featOperator,
+			 *			type <- thisModule.sortSetSfi,
+			 *			args <-	thisModule.AllObjectReferences(thisModule.RefWithoutDuplicates(obj.outLinks),obj.OppositeLinks())
+			 *						->collect(r|thisModule.LinksUpdate(r,obj,true))
+			 *						->union(obj.sfs -> collect(s|thisModule.Slots2RecTermRHS(s)))						
+			 *			)
+			 *	}
+			 * </pre>
+			 */
+			sfi = maudeFact.createRecTerm(MaudeOperators.SFS_SET);
+			Map<EReference, List<Link>> references = ObjectOperations.mapRef2Links(behObject.getOutLinks());
+			for (EReference ref : references.keySet()) {
+				/**
+				 * Code for creating update of links
+				 * 
+				 * LinksUpdate rule
+				 * <pre>
+				 * lazy rule LinksUpdate{
+					from
+						r : Behavior!EReference,
+						obj : Behavior!Object,
+						isNewObject : Boolean
+					to
+						ref : Maude!RecTerm(
+							op <- thisModule.sfsOperator,
+							type <- thisModule.sortRefInst,
+							args <- Sequence{left,right}
+							),
+						left : Maude!Constant(
+							op <- r.maudeName().processSpecOpChars(),
+							type <- thisModule.oclTypeSort
+						),
+						right : Maude!RecTerm(
+							op <- thisModule.updateOp,					
+							type <- thisModule.oclTypeSort,
+							args <- if isNewObject then 
+										Sequence{refArg,
+												thisModule.CreateConstant(thisModule.nullOperator,thisModule.oclTypeSort),
+												thisModule.CreateConstant(thisModule.nilOperator,thisModule.emptyListSort),
+												thisModule.LinksToAdd(r.LinksWithConcreteRef(obj.outLinks),obj.GetOppositeLinks(r))
+												}
+									else Sequence{refArg,
+												thisModule.CreateVariable(r.name.toUpper().processSpecOpChars()+'@'+obj.id+'@ATT',thisModule.oclTypeSort),
+												obj.LinksToDelete(r,r.LinksWithConcreteRef(obj.outLinks),obj.GetOppositeLinks(r)), 
+												thisModule.LinksToAdd(r.LinksWithConcreteRef(obj.outLinks),obj.GetOppositeLinks(r))
+												}
+									endif														 
+						),	 
+						refArg : Maude!Constant(
+							op <- r.maudeName().processSpecOpChars(), --l.ref.maudeName().processSpecOpChars(),
+							type <- thisModule.sortRefSimple
+						)
+					}
+				 * </pre>
+				 */
+				Constant refName = maudeFact.getConstant(MaudeIdentifiers.get(ref));
+				/* the `update` operation has four arguments */ 
+				RecTerm updateTerm = maudeFact.createRecTerm("update");
+				/* The reference name */
+				Constant refName2 = maudeFact.getConstant(MaudeIdentifiers.get(ref));
+				/* The old value for this reference */
+				Constant oldValue = maudeFact.getConstant("null");
+				/* List of references to be deleted */
+				Constant deleted = maudeFact.getConstant("nil");
+				/* Lis of references to be added */
+				
+				updateTerm.getArgs().addAll(Arrays.asList(refName2, oldValue, deleted));
+				
+				sfi.getArgs().add(maudeFact.createStructuralFeature(refName, updateTerm));
+			}
+		}
 		
-		//((RecTerm) res).getArgs().add(maudeFact.createObject(null, null, null));
+		((RecTerm) res).getArgs().add(maudeFact.createObject(id, cid, sfi));
 	}
 
 }
