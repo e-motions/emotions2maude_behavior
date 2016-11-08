@@ -1,4 +1,4 @@
-# e-Motions Behavior to Maude transformation
+# e-Motions Behavior to Maude transformation *(using Java!)*
 
 This file is intended to document the transformation from e-Motions behavior model to a Maude model.
 
